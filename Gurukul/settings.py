@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-e)_9d&8#_q_8d4*a7sk9_%-gdsjf2#thnoxkx!0ai**s43a3(*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ["10.176.123.49"]
+ALLOWED_HOSTS = ["*"]
 
 SESSION_COOKIE_AGE = 600  # 10 minutes
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
@@ -50,9 +50,11 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',  # Make sure this is here
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -60,7 +62,9 @@ MIDDLEWARE = [
 CSRF_COOKIE_SECURE = False  # Set to True in production with HTTPS
 CSRF_COOKIE_HTTPONLY = False
 CSRF_USE_SESSIONS = False
-CSRF_TRUSTED_ORIGINS = ['http://10.176.123.49:8000']  # Add your development URL
+CSRF_TRUSTED_ORIGINS = [
+    'https://gurukul-rishabhdeo.onrender.com'
+]  # Add your development URL
 ROOT_URLCONF = 'Gurukul.urls'
 
 TEMPLATES = [
