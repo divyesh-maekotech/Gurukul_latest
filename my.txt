@@ -1,0 +1,505 @@
+# Hotel Booking System - Django Project Structure
+
+## 1. PROJECT SETUP
+
+# requirements.txt
+Django==4.2.7
+django-cors-headers==4.3.1
+djangorestframework==3.14.0
+Pillow==10.1.0
+
+# hotel_booking/settings.py
+import os
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+SECRET_KEY = 'your-secret-key-here'
+DEBUG = True
+ALLOWED_HOSTS = ['*']
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'rest_framework',
+    'corsheaders',
+    'booking',
+]
+
+MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+ROOT_URLCONF = 'hotel_booking.urls'
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [BASE_DIR / 'templates'],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ],
+}
+
+# hotel_booking/urls.py
+from django.contrib import admin
+from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('api/', include('booking.urls')),
+    path('', include('booking.urls')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+## 2. BOOKING APP MODELS
+
+# booking/models.py
+from django.db import models
+from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator, MaxValueValidator
+
+class RoomType(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    price_per_night = models.DecimalField(max_digits=10, decimal_places=2)
+    capacity = models.IntegerField()
+    amenities = models.TextField(help_text="Comma-separated amenities")
+    image = models.ImageField(upload_to='room_images/', blank=True, null=True)
+    
+    def __str__(self):
+        return self.name
+
+class Room(models.Model):
+    room_number = models.CharField(max_length=10, unique=True)
+    room_type = models.ForeignKey(RoomType, on_delete=models.CASCADE)
+    is_available = models.BooleanField(default=True)
+    floor = models.IntegerField()
+    
+    def __str__(self):
+        return f"Room {self.room_number} - {self.room_type.name}"
+
+class Booking(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('confirmed', 'Confirmed'),
+        ('checked_in', 'Checked In'),
+        ('checked_out', 'Checked Out'),
+        ('cancelled', 'Cancelled'),
+    ]
+    
+    customer_name = models.CharField(max_length=100)
+    customer_email = models.EmailField()
+    customer_phone = models.CharField(max_length=15)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    check_in_date = models.DateField()
+    check_out_date = models.DateField()
+    guests = models.IntegerField(validators=[MinValueValidator(1)])
+    special_requests = models.TextField(blank=True)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        ordering = ['-created_at']
+    
+    def __str__(self):
+        return f"Booking {self.id} - {self.customer_name}"
+
+class ContactMessage(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    subject = models.CharField(max_length=200)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
+    
+    class Meta:
+        ordering = ['-created_at']
+    
+    def __str__(self):
+        return f"Message from {self.name} - {self.subject}"
+
+## 3. SERIALIZERS
+
+# booking/serializers.py
+from rest_framework import serializers
+from .models import RoomType, Room, Booking, ContactMessage
+
+class RoomTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RoomType
+        fields = '__all__'
+
+class RoomSerializer(serializers.ModelSerializer):
+    room_type = RoomTypeSerializer(read_only=True)
+    
+    class Meta:
+        model = Room
+        fields = '__all__'
+
+class BookingSerializer(serializers.ModelSerializer):
+    room_details = RoomSerializer(source='room', read_only=True)
+    
+    class Meta:
+        model = Booking
+        fields = '__all__'
+
+class BookingCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Booking
+        fields = [
+            'customer_name', 'customer_email', 'customer_phone',
+            'room', 'check_in_date', 'check_out_date', 'guests',
+            'special_requests'
+        ]
+
+class ContactMessageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ContactMessage
+        fields = '__all__'
+
+## 4. VIEWS
+
+# booking/views.py
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+from django.views.decorators.http import require_http_methods
+from rest_framework import viewsets, status
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.response import Response
+from datetime import datetime, date
+import json
+
+from .models import RoomType, Room, Booking, ContactMessage
+from .serializers import (
+    RoomTypeSerializer, RoomSerializer, BookingSerializer,
+    BookingCreateSerializer, ContactMessageSerializer
+)
+
+def index(request):
+    return render(request, 'index.html')
+
+class RoomTypeViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = RoomType.objects.all()
+    serializer_class = RoomTypeSerializer
+    permission_classes = [AllowAny]
+
+class RoomViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Room.objects.filter(is_available=True)
+    serializer_class = RoomSerializer
+    permission_classes = [AllowAny]
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def available_rooms(request):
+    check_in = request.GET.get('check_in')
+    check_out = request.GET.get('check_out')
+    guests = request.GET.get('guests', 1)
+    
+    if not check_in or not check_out:
+        return Response({'error': 'Check-in and check-out dates are required'}, 
+                       status=status.HTTP_400_BAD_REQUEST)
+    
+    # Get rooms not booked during the specified period
+    booked_rooms = Booking.objects.filter(
+        check_in_date__lt=check_out,
+        check_out_date__gt=check_in,
+        status__in=['confirmed', 'checked_in']
+    ).values_list('room_id', flat=True)
+    
+    available_rooms = Room.objects.filter(
+        is_available=True,
+        room_type__capacity__gte=guests
+    ).exclude(id__in=booked_rooms)
+    
+    serializer = RoomSerializer(available_rooms, many=True)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def create_booking(request):
+    serializer = BookingCreateSerializer(data=request.data)
+    if serializer.is_valid():
+        booking = serializer.save()
+        
+        # Calculate total amount
+        check_in = booking.check_in_date
+        check_out = booking.check_out_date
+        nights = (check_out - check_in).days
+        total_amount = booking.room.room_type.price_per_night * nights
+        
+        booking.total_amount = total_amount
+        booking.save()
+        
+        return Response(BookingSerializer(booking).data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def contact_message(request):
+    serializer = ContactMessageSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({'message': 'Message sent successfully'}, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def admin_login(request):
+    username = request.data.get('username')
+    password = request.data.get('password')
+    
+    user = authenticate(username=username, password=password)
+    if user and user.is_staff:
+        login(request, user)
+        return Response({'message': 'Login successful', 'is_admin': True})
+    return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def admin_logout(request):
+    logout(request)
+    return Response({'message': 'Logout successful'})
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def admin_bookings(request):
+    if not request.user.is_staff:
+        return Response({'error': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
+    
+    bookings = Booking.objects.all()
+    serializer = BookingSerializer(bookings, many=True)
+    return Response(serializer.data)
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def update_booking_status(request, booking_id):
+    if not request.user.is_staff:
+        return Response({'error': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
+    
+    try:
+        booking = Booking.objects.get(id=booking_id)
+        booking.status = request.data.get('status', booking.status)
+        booking.save()
+        return Response(BookingSerializer(booking).data)
+    except Booking.DoesNotExist:
+        return Response({'error': 'Booking not found'}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def admin_messages(request):
+    if not request.user.is_staff:
+        return Response({'error': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
+    
+    messages = ContactMessage.objects.all()
+    serializer = ContactMessageSerializer(messages, many=True)
+    return Response(serializer.data)
+
+## 5. URLS
+
+# booking/urls.py
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from . import views
+
+router = DefaultRouter()
+router.register(r'room-types', views.RoomTypeViewSet)
+router.register(r'rooms', views.RoomViewSet)
+
+urlpatterns = [
+    path('', views.index, name='index'),
+    path('api/', include(router.urls)),
+    path('api/available-rooms/', views.available_rooms, name='available_rooms'),
+    path('api/book-room/', views.create_booking, name='create_booking'),
+    path('api/contact/', views.contact_message, name='contact_message'),
+    path('api/admin/login/', views.admin_login, name='admin_login'),
+    path('api/admin/logout/', views.admin_logout, name='admin_logout'),
+    path('api/admin/bookings/', views.admin_bookings, name='admin_bookings'),
+    path('api/admin/bookings/<int:booking_id>/', views.update_booking_status, name='update_booking_status'),
+    path('api/admin/messages/', views.admin_messages, name='admin_messages'),
+]
+
+## 6. ADMIN CONFIGURATION
+
+# booking/admin.py
+from django.contrib import admin
+from .models import RoomType, Room, Booking, ContactMessage
+
+@admin.register(RoomType)
+class RoomTypeAdmin(admin.ModelAdmin):
+    list_display = ['name', 'price_per_night', 'capacity']
+    list_filter = ['capacity']
+    search_fields = ['name']
+
+@admin.register(Room)
+class RoomAdmin(admin.ModelAdmin):
+    list_display = ['room_number', 'room_type', 'floor', 'is_available']
+    list_filter = ['room_type', 'is_available', 'floor']
+    search_fields = ['room_number']
+
+@admin.register(Booking)
+class BookingAdmin(admin.ModelAdmin):
+    list_display = ['id', 'customer_name', 'room', 'check_in_date', 'check_out_date', 'status', 'total_amount']
+    list_filter = ['status', 'check_in_date', 'created_at']
+    search_fields = ['customer_name', 'customer_email', 'room__room_number']
+    readonly_fields = ['created_at', 'updated_at']
+
+@admin.register(ContactMessage)
+class ContactMessageAdmin(admin.ModelAdmin):
+    list_display = ['name', 'email', 'subject', 'created_at', 'is_read']
+    list_filter = ['is_read', 'created_at']
+    search_fields = ['name', 'email', 'subject']
+
+## 7. MANAGEMENT COMMANDS
+
+# Create: booking/management/__init__.py
+# Create: booking/management/commands/__init__.py
+
+# booking/management/commands/create_sample_data.py
+from django.core.management.base import BaseCommand
+from django.contrib.auth.models import User
+from booking.models import RoomType, Room
+
+class Command(BaseCommand):
+    help = 'Create sample data for the hotel booking system'
+
+    def handle(self, *args, **options):
+        # Create superuser
+        if not User.objects.filter(username='admin').exists():
+            User.objects.create_superuser('admin', 'admin@hotel.com', 'password')
+            self.stdout.write('Created admin user: admin/admin123')
+
+        # Create room types
+        room_types_data = [
+            {
+                'name': 'Standard Room',
+                'description': 'Comfortable room with basic amenities',
+                'price_per_night': 100.00,
+                'capacity': 2,
+                'amenities': 'WiFi, TV, Air Conditioning, Private Bathroom'
+            },
+            {
+                'name': 'Deluxe Room',
+                'description': 'Spacious room with premium amenities',
+                'price_per_night': 150.00,
+                'capacity': 3,
+                'amenities': 'WiFi, TV, Air Conditioning, Mini Bar, Balcony'
+            },
+            {
+                'name': 'Suite',
+                'description': 'Luxury suite with separate living area',
+                'price_per_night': 250.00,
+                'capacity': 4,
+                'amenities': 'WiFi, TV, Air Conditioning, Mini Bar, Balcony, Living Room, Kitchenette'
+            }
+        ]
+
+        for room_data in room_types_data:
+            room_type, created = RoomType.objects.get_or_create(
+                name=room_data['name'],
+                defaults=room_data
+            )
+            if created:
+                self.stdout.write(f'Created room type: {room_type.name}')
+
+        # Create rooms
+        room_types = RoomType.objects.all()
+        for floor in range(1, 4):  # 3 floors
+            for room_num in range(1, 6):  # 5 rooms per floor
+                room_number = f"{floor}0{room_num}"
+                room_type = room_types[room_num % len(room_types)]
+                
+                room, created = Room.objects.get_or_create(
+                    room_number=room_number,
+                    defaults={
+                        'room_type': room_type,
+                        'floor': floor,
+                        'is_available': True
+                    }
+                )
+                if created:
+                    self.stdout.write(f'Created room: {room.room_number}')
+
+        self.stdout.write(self.style.SUCCESS('Sample data created successfully!'))
+
+## 8. INSTALLATION AND SETUP INSTRUCTIONS
+
+"""
+1. Create a new Django project:
+   django-admin startproject hotel_booking
+   cd hotel_booking
+   python manage.py startapp booking
+
+2. Install requirements:
+   pip install -r requirements.txt
+
+3. Replace the generated files with the code above
+
+4. Create database and run migrations:
+   python manage.py makemigrations
+   python manage.py migrate
+
+5. Create sample data:
+   python manage.py create_sample_data
+
+6. Run the development server:
+   python manage.py runserver
+
+7. Access the application:
+   - Frontend: http://127.0.0.1:8000/
+   - Admin: http://127.0.0.1:8000/admin/ (admin/admin123)
+   - API: http://127.0.0.1:8000/api/
+
+Default admin credentials: admin/admin123
+"""

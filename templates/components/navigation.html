@@ -1,0 +1,44 @@
+<nav class="navbar navbar-expand-lg temple-nav" id="mainNav">
+  <div class="container-fluid d-flex align-items-center">
+
+    <!-- 1. Mobile Hamburger (Left) -->
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style="color: white;">
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- 2. Right-aligned Section (Icons/Toggle) -->
+    <div class="right-nav-section d-flex align-items-center gap-3 ms-auto order-lg-last">
+      
+      <!-- Language Toggle -->
+   <div class="d-flex align-items-center language-toggle-container" onclick="document.getElementById('languageToggle').click();" style="cursor: pointer;">
+    <span class="fw-bold transition-label" id="labelEN" style="color: #ffffff;">EN</span>
+    <div class="form-check form-switch m-0 p-0 d-flex align-items-center mx-2">
+        <input class="form-check-input m-0 custom-switch" type="checkbox" role="switch" id="languageToggle" onclick="event.stopPropagation();">
+    </div>
+    <span class="transition-label" id="labelHI" style="color: rgba(255,255,255,0.6);">HI</span>
+</div>
+
+      <!-- Admin Login (Responsive) -->
+      <button class="btn admin-btn text-white border-0" onclick="window.location.href='{% url 'login' %}'">
+        <i class="fas fa-user-shield d-lg-none" style="font-size: 1.2rem;"></i>
+        <span class="d-none d-lg-inline">Admin Login</span>
+      </button>
+    </div>
+
+    <!-- 3. Collapsible Links -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link active" href="javascript:void(0)" onclick="showSection('home')">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="showSection('about')">About Us</a></li>
+        <li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="showSection('booking')">Room Booking</a></li>
+        <li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="showSection('history')">History</a></li>
+        <li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="showSection('trustees')">Trustees</a></li>
+        <li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="showSection('donation')">Donation</a></li>
+        <li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="showSection('gallery')">Gallery</a></li>
+        <li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="showSection('contact')">Contact</a></li>
+        <li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="showSection('nearby')">Nearby Places</a></li>
+      </ul>
+    </div>
+
+  </div>
+</nav>

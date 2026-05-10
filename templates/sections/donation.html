@@ -1,0 +1,72 @@
+{% load static %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+<section id="donation" class="content-section fade-in" style="display: none;">
+    <h5 class="section-title">
+        <i class="fas fa-hand-holding-heart me-3"></i>Donate for Temple
+    </h5>
+    
+    <div class="card temple-card temple-info-card m-3">
+        <div class="card-body p-5">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h3 class="text-primary mb-4 display-6">🙏 योगदान करें - मंदिर सेवा हेतु</h3>
+                    
+                      <div class="row g-3 justify-content-center">
+                      <div class="col-lg-4 col-md-6">
+                            <div class="card contact-card h-100">
+                                <div class="card-body">
+                                    <div class="d-inline-block  p-1">
+                                        <img src="{% static 'img/newqrcode.jpeg' %}" class="d-block w-100" alt="Temple">
+                                    </div>
+
+                                  <div style="color: var(--primary-orange);font-size:1.3rem">eazypay.0000094503@icici</div>
+                                    <p>कृपया QR कोड स्कैन करके दान करें</p>
+                                    
+
+                                </div>
+                            </div>
+                        </div>
+                
+                </div>
+                      </div>
+            </div>
+        </div>
+    </div>
+
+  <!-- JS for PDF generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+document.getElementById('donationForm').addEventListener('submit', function(e){
+  e.preventDefault();
+
+  const name = document.getElementById('name').value.trim();
+  const father = document.getElementById('father').value.trim();
+  const mother = document.getElementById('mother').value.trim();
+  const gautra = document.getElementById('gautra').value.trim();
+
+  // Fill data into hidden div
+  document.getElementById('d_name').innerText = name;
+  document.getElementById('d_father').innerText = father;
+  document.getElementById('d_mother').innerText = mother;
+  document.getElementById('d_gautra').innerText = gautra;
+
+  // Make div visible temporarily
+  const donationCard = document.getElementById('donationCard');
+  donationCard.style.display = 'block';
+
+  html2canvas(donationCard).then(canvas => {
+    const link = document.createElement('a');
+    link.download = 'mandir_dan_form.png';
+    link.href = canvas.toDataURL();
+    link.click();
+
+    // Hide div again
+    donationCard.style.display = 'none';
+  });
+});
+</script>
+
+</section>

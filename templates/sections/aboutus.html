@@ -1,0 +1,83 @@
+  {% load static %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+ <section id="about" class="content-section fade-in" style="display: none;">
+            <h5 class="section-title">
+                <i class="fas fa-temple me-3"></i>About Our Sacred Temple
+            </h5>
+            
+            <div class="card temple-card temple-info-card mx-3 mb-5">
+                <div class="card-body p-5">
+                    <div class="row align-items-center">
+                        <div class="col-lg-8">
+                            <h3 class="text-primary mb-4 display-6">श्री भट्टारक दिगंबर जैन धर्मार्थ ट्रस्ट एवं धर्मशाला</h3>
+                            <p style="font-size: 1.1rem; color: #666;"> 
+                                श्री भट्टारक यश कीर्ति दिगम्बर जैन धर्मार्थ ट्रस्ट, ऋषभदेव – राजस्थान के उदयपुर-अहमदाबाद राष्ट्रीय राजमार्ग-8 पर स्थित यह पवित्र स्थल, भगवान ऋषभदेव के प्राचीन एवं अतिशय प्रभावी मंदिर के लिए सम्पूर्ण भारत में प्रसिद्ध है।
+                            </p>
+                            <p class="mt-4"style="font-size: 1.1rem; color: #666;">
+                                यह मंदिर अपनी अद्भुत शिल्पकला, ऐतिहासिकता एवं केसर-पूजन परंपरा के कारण श्रद्धालुओं का आस्था केंद्र बना हुआ है। यहाँ आदिकाल से केसर अभिषेक की परंपरा चली आ रही है, जिसके कारण यह केशरिया जी मंदिर और कालिया बाबा के नाम से भी विख्यात है।
+                            </p>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="text-center">
+                                <img src="{% static 'img/temple.jpeg' %}" class="img-fluid rounded-4 shadow-lg" alt="Temple" style="max-height: 300px;">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Image Gallery -->
+                    <div class="row g-3 mt-4">
+                        <div class="col-6 col-md-2">
+                            <img src="{% static 'img/temple.jpeg' %}" class="img-fluid rounded-3 shadow-sm" alt="Temple" style="height: 120px; object-fit: cover; width: 120px;">
+                        </div>
+                        <div class="col-6 col-md-2">
+                            <img src="{% static 'img/img7.jpeg' %}" class="img-fluid rounded-3 shadow-sm" alt="Temple" style="height: 120px; object-fit: cover; width: 120px;">
+                        </div>
+                        <div class="col-6 col-md-2">
+                            <img src="{% static 'img/rishabhdeo.jpg' %}" class="img-fluid rounded-3 shadow-sm" alt="Temple" style="height: 120px; object-fit: cover; width: 120px;">
+                        </div>
+                        <div class="col-6 col-md-2">
+                            <img src="{% static 'img/img6.jpeg' %}" class="img-fluid rounded-3 shadow-sm" alt="Temple" style="height: 120px; object-fit: cover; width: 120px;">
+                        </div>
+                        <div class="col-6 col-md-2">
+                            <img src="{% static 'img/temple_top.jpg' %}" class="img-fluid rounded-3 shadow-sm" alt="Temple" style="height: 120px; object-fit: cover; width: 120px">
+                        </div>
+                        <div class="col-6 col-md-2">
+                            <div class="bg-light rounded-3 d-flex align-items-center justify-content-center" style="height: 120px;">
+                                <div class="text-center">
+                                    <i class="fas fa-images fa-2x text-muted mb-2"></i>
+                                    <small class="text-muted">More Images</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mission & Vision -->
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="card temple-card h-100">
+                        <div class="card-body p-4">
+                            <div class="text-center mb-3">
+                                <i class="fas fa-eye fa-3x" style="color: var(--primary-orange);"></i>
+                            </div>
+                            <h4 class="text-center mb-3" style="color: var(--primary-orange);">Our Vision</h4>
+                            <p>To be a leading spiritual center that preserves and promotes Jain traditions while serving humanity through compassion, education, and cultural heritage.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card temple-card h-100">
+                        <div class="card-body p-4">
+                            <div class="text-center mb-3">
+                                <i class="fas fa-bullseye fa-3x" style="color: var(--primary-orange);"></i>
+                            </div>
+                            <h4 class="text-center mb-3" style="color: var(--primary-orange);">Our Mission</h4>
+                            <p>To uphold the fundamental principles of Jainism - Ahimsa, Satya, Asteya, Brahmacharya, and Aparigraha while providing spiritual guidance and community service.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>

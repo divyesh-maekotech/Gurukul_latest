@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+    <div class="container">
+        <div class="header">
+            <h1>🏨 Booking System</h1>
+            <div class="nav-tabs">
+                <button class="nav-tab active" onclick="showSection('booking')">Book Room</button>
+                <button class="nav-tab" onclick="showSection('rooms')">View Rooms</button>
+                <button class="nav-tab" onclick="showSection('my-bookings')">My Bookings</button>
+                <button class="nav-tab" onclick="showSection('contact')">Contact</button>
+                <button class="nav-tab" onclick="showSection('admin')">Admin</button>
+            </div>
+        </div>
+
+        <!-- Booking Section -->
+        <div id="booking" class="content-section active">
+            <h2>🎯 Book Your Perfect Room</h2>
+            
+            <!-- Online Booking -->
+            <div id="online-booking">
+                <h3>Online Booking</h3>
+                <form id="bookingForm">
+                    <div class="form-row">
+                        <div class="form-col">
+                            <label for="checkIn">Check-in Date:</label>
+                            <input type="date" id="checkIn" name="check_in" required>
+                        </div>
+                        <div class="form-col">
+                            <label for="checkOut">Check-out Date:</label>
+                            <input type="date" id="checkOut" name="check_out" required>
+                        </div>
+                        <div class="form-col">
+                            <label for="guests">Guests:</label>
+                            <select id="guests" name="guests" required>
+                                <option value="1">1 Guest</option>
+                                <option value="2">2 Guests</option>
+                                <option value="3">3 Guests</option>
+                                <option value="4">4 Guests</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="button" class="btn" onclick="searchRooms()">🔍 Search Available Rooms</button>
+                </form>
+
+                <div id="availableRooms" class="room-grid"></div>
+            </div>
+
+            <!-- Offline Booking -->
+            <div class="offline-booking">
+                <h3>📞 Offline Booking</h3>
+                <p><strong>Prefer to book over the phone?</strong></p>
+                <p>Call us at: <strong>+91 123-456-7890</strong></p>
+                <p>Email us at: <strong>bookings@hotel.com</strong></p>
+                <p>Walk-in bookings are also welcome!</p>
+                <p><em>Our staff will help you find the perfect room and handle all arrangements.</em></p>
+            </div>
+        </div>
+
+        <!-- Rooms Section -->
+        <div id="rooms" class="content-section">
+            <h2>🏨 Our Rooms</h2>
+            <div id="roomsList" class="room-grid"></div>
+        </div>
+
+        <!-- My Bookings Section -->
+        <div id="my-bookings" class="content-section">
+            <h2>📋 My Bookings</h2>
+            <div class="form-group">
+                <label for="searchEmail">Enter your email to view bookings:</label>
+                <div class="form-row">
+                    <div class="form-col">
+                        <input type="email" id="searchEmail" placeholder="your@email.com">
+                    </div>
+                    <div class="form-col">
+                        <button class="btn" onclick="searchBookings()">🔍 Search Bookings</button>
+                    </div>
+                </div>
+            </div>
+            <div id="myBookingsList"></div>
+        </div>
+
+        <!-- Contact Section -->
+        <div id="contact" class="content-section">
+            <h2>📞 Contact Us</h2>
+            <form id="contactForm">
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="contactName">Name:</label>
+                        <input type="text" id="contactName" name="name" required>
+                    </div>
+                    <div class="form-col">
+                        <label for="contactEmail">Email:</label>
+                        <input type="email" id="contactEmail" name="email" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="contactSubject">Subject:</label>
+                    <input type="text" id="contactSubject" name="subject" required>
+                </div>
+                <div class="form-group">
+                    <label for="contactMessage">Message:</label>
+                    <textarea id="contactMessage" name="message" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="btn">📧 Send Message</button>
+            </form>
+        </div>
+
+        <!-- Admin Section -->
+        <div id="admin" class="content-section">
+            <div id="adminLogin" class="login-form">
+                <h2>🔐 Admin Login</h2>
+                <form id="adminLoginForm">
+                    <div class="form-group">
+                        <label for="adminUsername">Username:</label>
+                        <input type="text" id="adminUsername" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="adminPassword">Password:</label>
+                        <input type="password" id="adminPassword" name="password" required>
+                    </div>
+                    <button type="submit" class="btn">🔑 Login</button>
+                </form>
+            </div>
+
+            <div id="adminDashboard" style="display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2>📊 Admin Dashboard</h2>
+                    <button class="btn btn-danger" onclick="adminLogout()">🚪 Logout</button>
+                </div>
+                
+                <div class="nav-tabs">
+                    <button class="nav-tab active" onclick="showAdminSection('admin-bookings')">Bookings</button>
+                    <button class="nav-tab" onclick="showAdminSection('admin-messages')">Messages</button>
+                </div>
+
+                <div id="admin-bookings" class="admin-section">
+                    <h3>📋 All Bookings</h3>
+                    <div id="adminBookingsList"></div>
+                </div>
+
+                <div id="admin-messages" class="admin-section" style="display: none;">
+                    <h3>📧 Contact Messages</h3>
+                    <div id="adminMessagesList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Modal -->
+    <div id="bookingModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000;">
+        <div style="background: white; width: 90%; max-width: 600px; margin: 50px auto; padding: 30px; border-radius: 15px; max-height: 80vh; overflow-y: auto;">
+            <h3>📝 Complete Your Booking</h3>
+            <form id="completeBookingForm">
+                <input type="hidden" id="selectedRoomId">
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="customerName">Full Name:</label>
+                        <input type="text" id="customerName" name="customer_name" required>
+                    </div>
+                    <div class="form-col">
+                        <label for="customerEmail">Email:</label>
+                        <input type="email" id="customerEmail" name="customer_email" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="customerPhone">Phone:</label>
+                    <input type="tel" id="customerPhone" name="customer_phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="specialRequests">Special Requests:</label>
+                    <textarea id="specialRequests" name="special_requests" rows="3" placeholder="Any special requests or preferences..."></textarea>
+                </div>
+                <div class="booking-summary">
+                    <h4>📋 Booking Summary</h4>
+                    <div id="bookingSummary"></div>
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <button type="button" class="btn" onclick="closeBookingModal()">❌ Cancel</button>
+                    <button type="submit" class="btn btn-success">✅ Confirm Booking</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

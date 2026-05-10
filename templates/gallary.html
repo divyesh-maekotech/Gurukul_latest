@@ -1,0 +1,374 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+
+{% block title %}Gallery Management{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 class="fw-bold text-dark mb-1">
+                        <i class="bi bi-images text-warning me-2"></i>Gallery Management
+                    </h2>
+                    <p class="text-muted mb-0">Manage temple gallery images and moments</p>
+                </div>
+                <button class="btn btn-lg text-white shadow-sm" style="background: var(--gradient-primary);" data-bs-toggle="modal" data-bs-target="#addImageModal">
+                    <i class="bi bi-plus-circle me-2"></i>Add Image
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="card border-0 shadow-sm mb-4" style="background: var(--sidebar-bg);">
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label fw-semibold">
+                        <i class="bi bi-funnel me-2"></i>Category Filter
+                    </label>
+                    <select class="form-select" id="categoryFilter">
+                        <option value="">All Categories</option>
+                        <option value="temple">Main Temple</option>
+                        <option value="prayers">Morning Prayers</option>
+                        <option value="cultural">Cultural Programs</option>
+                        <option value="accommodation">Accommodation</option>
+                        <option value="dining">Dining Hall</option>
+                        <option value="gardens">Temple Gardens</option>
+                        <option value="festivals">Festivals</option>
+                        <option value="ceremonies">Ceremonies</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">
+                        <i class="bi bi-search me-2"></i>Search Images
+                    </label>
+                    <input type="text" class="form-control" id="searchImages" placeholder="Search by title or description">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-semibold">
+                        <i class="bi bi-calendar me-2"></i>Upload Date
+                    </label>
+                    <input type="date" class="form-select" id="dateFilter">
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button class="btn btn-outline-secondary w-100" onclick="clearFilters()">
+                        <i class="bi bi-arrow-clockwise me-2"></i>Reset
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gallery Grid -->
+    <div class="row g-4" id="galleryGrid">
+        {% for gallery in galleries %}
+        <div class="col-lg-3 col-md-4 col-sm-6 gallery-item" data-category="{{ gallery.category }}" data-title="{{ gallery.title|lower }}" data-date="{{ gallery.created_at|date:'Y-m-d' }}">
+            <div class="card shadow-sm h-100">
+                <div class="position-relative">
+                    <img src="{{ gallery.image.url }}" class="card-img-top" alt="{{ gallery.title }}" style="height: 200px; object-fit: cover;">
+                    <div class="position-absolute top-0 end-0 p-2">
+                        <span class="badge bg-primary">{{ gallery.get_category_display }}</span>
+                    </div>
+                    {% if not gallery.is_active %}
+                    <div class="position-absolute top-0 start-0 p-2">
+                        <span class="badge bg-secondary">Inactive</span>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <h6 class="card-title">{{ gallery.title }}</h6>
+                    <p class="card-text text-muted small">{{ gallery.description|truncatewords:10 }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">{{ gallery.created_at|date:"M d, Y" }}</small>
+                        <div class="btn-group">
+                            <button class="btn btn-sm btn-outline-primary" onclick="editImage({{ gallery.id }})">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="deleteImage({{ gallery.id }}, '{{ gallery.title }}')">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <i class="bi bi-images display-1 text-muted mb-3"></i>
+            <h4 class="text-muted">No Images Found</h4>
+            <p class="text-muted">Start by adding some beautiful temple moments!</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<div class="modal fade" id="addImageModal" tabindex="-1" aria-labelledby="addImageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background: var(--gradient-primary);">
+                <h5 class="modal-title text-white fw-bold" id="modalTitle">
+                    <i class="bi bi-plus-circle me-2"></i><span id="modalTitleText">Add New Gallery Image</span>
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form id="addImageForm" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="image_id" id="imageId">
+                    <div class="row g-4">
+                        <div class="col-12">
+                            <label class="form-label fw-semibold">Image Title *</label>
+                            <input type="text" class="form-control" name="title" id="imageTitle" required placeholder="Enter a meaningful title">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Category *</label>
+                            <select class="form-select" name="category" id="imageCategory" required>
+                                <option value="">Select Category</option>
+                                <option value="temple">Main Temple</option>
+                                <option value="prayers">Morning Prayers</option>
+                                <option value="cultural">Cultural Programs</option>
+                                <option value="accommodation">Accommodation</option>
+                                <option value="dining">Dining Hall</option>
+                                <option value="gardens">Temple Gardens</option>
+                                <option value="festivals">Festivals</option>
+                                <option value="ceremonies">Ceremonies</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Upload Image <span id="requiredStar">*</span></label>
+                            <input type="file" class="form-control" name="image" id="imageFile" accept="image/*" onchange="previewImage(this)">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-semibold">Description</label>
+                            <textarea class="form-control" name="description" id="imageDescription" rows="3" placeholder="Optional description about the image"></textarea>
+                        </div>
+                        <div class="col-12">
+                            <div id="imagePreview" class="text-center" style="display: none;">
+                                <img id="previewImg" class="img-fluid rounded" style="max-height: 200px;">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn text-white" style="background: var(--gradient-primary);" onclick="submitImage()">
+                    <i class="bi bi-upload me-2"></i><span id="submitBtnText">Upload Image</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.gallery-item {
+    transition: all 0.3s ease;
+}
+.gallery-item:hover {
+    transform: translateY(-5px);
+}
+.card-img-top {
+    transition: all 0.3s ease;
+}
+.card:hover .card-img-top {
+    transform: scale(1.05);
+}
+.btn-group .btn {
+    border: 1px solid #dee2e6;
+}
+</style>
+
+<script>
+function previewImage(input) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('previewImg').src = e.target.result;
+            document.getElementById('imagePreview').style.display = 'block';
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+function editImage(imageId) {
+    fetch(`/api/gallery/${imageId}/`)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('imageId').value = data.id;
+            document.getElementById('imageTitle').value = data.title;
+            document.getElementById('imageCategory').value = data.category;
+            document.getElementById('imageDescription').value = data.description || '';
+            
+            document.getElementById('modalTitleText').textContent = 'Edit Gallery Image';
+            document.getElementById('submitBtnText').textContent = 'Update Image';
+            document.getElementById('requiredStar').style.display = 'none';
+            document.getElementById('imageFile').removeAttribute('required');
+            
+            if (data.image) {
+                document.getElementById('previewImg').src = data.image;
+                document.getElementById('imagePreview').style.display = 'block';
+            }
+            
+            const modal = new bootstrap.Modal(document.getElementById('addImageModal'));
+            modal.show();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showAlert('Failed to load image data', 'danger');
+        });
+}
+
+function deleteImage(imageId, title) {
+    if (confirm(`Are you sure you want to delete "${title}"?`)) {
+        fetch(`/api/gallery/${imageId}/`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                showAlert('Error: ' + data.error, 'danger');
+            } else {
+                showAlert('Image deleted successfully!', 'success');
+                setTimeout(() => location.reload(), 1000);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showAlert('Failed to delete image', 'danger');
+        });
+    }
+}
+
+function submitImage() {
+    const form = document.getElementById('addImageForm');
+    const formData = new FormData(form);
+    const imageId = document.getElementById('imageId').value;
+    const title = formData.get('title');
+    const category = formData.get('category');
+    const image = formData.get('image');
+
+    if (!title || !category || (!image.name && !imageId)) {
+        showAlert('Please fill in all required fields', 'warning');
+        return;
+    }
+
+    // Add _method for PUT requests
+    if (imageId) {
+        formData.append('_method', 'PUT');
+    }
+
+    const submitBtn = document.querySelector('#addImageModal .btn[onclick="submitImage()"]');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="bi bi-upload me-2"></i>' + (imageId ? 'Updating...' : 'Uploading...');
+    submitBtn.disabled = true;
+
+    const url = imageId ? `/api/gallery/${imageId}/` : '/api/gallery/';
+    
+    fetch(url, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            showAlert('Error: ' + data.error, 'danger');
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        } else {
+            showAlert(imageId ? 'Image updated successfully!' : 'Image uploaded successfully!', 'success');
+            const modal = bootstrap.Modal.getInstance(document.getElementById('addImageModal'));
+            modal.hide();
+            setTimeout(() => location.reload(), 1000);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showAlert('Failed to ' + (imageId ? 'update' : 'upload') + ' image', 'danger');
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    });
+}
+
+function resetForm() {
+    document.getElementById('addImageForm').reset();
+    document.getElementById('imageId').value = '';
+    document.getElementById('imagePreview').style.display = 'none';
+    document.getElementById('modalTitleText').textContent = 'Add New Gallery Image';
+    document.getElementById('submitBtnText').textContent = 'Upload Image';
+    document.getElementById('requiredStar').style.display = 'inline';
+    document.getElementById('imageFile').setAttribute('required', 'required');
+}
+
+document.getElementById('addImageModal').addEventListener('hidden.bs.modal', resetForm);
+
+function toggleStatus(imageId, currentStatus) {
+    const newStatus = !currentStatus;
+    console.log('Toggling status for image:', imageId, 'to:', newStatus);
+    showAlert('Status toggle functionality coming soon!', 'info');
+}
+
+function clearFilters() {
+    document.getElementById('categoryFilter').value = '';
+    document.getElementById('searchImages').value = '';
+    document.getElementById('dateFilter').value = '';
+    filterGallery();
+}
+
+document.getElementById('categoryFilter').addEventListener('change', filterGallery);
+document.getElementById('searchImages').addEventListener('input', filterGallery);
+document.getElementById('dateFilter').addEventListener('change', filterGallery);
+
+function filterGallery() {
+    const categoryFilter = document.getElementById('categoryFilter').value.toLowerCase();
+    const searchFilter = document.getElementById('searchImages').value.toLowerCase();
+    const dateFilter = document.getElementById('dateFilter').value;
+    const items = document.querySelectorAll('.gallery-item');
+
+    items.forEach(item => {
+        const category = item.dataset.category;
+        const title = item.dataset.title;
+        const date = item.dataset.date;
+        let matches = true;
+
+        if (categoryFilter && category !== categoryFilter) {
+            matches = false;
+        }
+        if (searchFilter && !title.includes(searchFilter)) {
+            matches = false;
+        }
+        if (dateFilter && date !== dateFilter) {
+            matches = false;
+        }
+        item.style.display = matches ? 'block' : 'none';
+    });
+}
+
+function showAlert(message, type) {
+    const alertHtml = `<div class="alert alert-${type} alert-dismissible fade show" style="position: fixed; top: 20px; right: 20px; z-index: 9999; min-width: 300px;">
+        <i class="bi bi-${type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'} me-2"></i>
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>`;
+    document.body.insertAdjacentHTML('beforeend', alertHtml);
+    setTimeout(() => {
+        const alert = document.querySelector('.alert');
+        if (alert) alert.remove();
+    }, 5000);
+}
+</script>
+<style>
+.modal {
+    z-index: 20000 !important;
+}
+</style>
+{% endblock %}

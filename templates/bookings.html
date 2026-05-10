@@ -1,0 +1,40 @@
+<div class="card mt-4 shadow">
+  <div class="card-header" style="background: var(--gradient-primary); color:white;">
+    Booking Approvals
+  </div>
+  <div class="card-body">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Devotee</th>
+          <th>Room</th>
+          <th>Dates</th>
+          <th>Payment</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for booking in pending_bookings %}
+        <tr>
+          <td>{{ booking.user.email }}</td>
+          <td>{{ booking.room_number }}</td>
+          <td>{{ booking.check_in }} → {{ booking.check_out }}</td>
+          <td>
+            {% if booking.payment_received %}
+              <span class="badge bg-success">Received</span>
+            {% else %}
+              <span class="badge bg-danger">Not Received</span>
+            {% endif %}
+          </td>
+          <td>
+            <a href="{% url 'approve_booking' booking.id %}" class="btn btn-sm btn-success">Approve</a>
+            <a href="{% url 'reject_booking' booking.id %}" class="btn btn-sm btn-danger">Reject</a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5">No pending bookings</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>

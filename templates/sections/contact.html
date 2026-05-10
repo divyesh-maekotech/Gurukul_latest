@@ -1,0 +1,135 @@
+   {% load static %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+   <section id="contact" class="content-section fade-in" style="display: none;">
+            <h5 class="section-title">
+                <i class="fas fa-phone me-3"></i>Connect With Us
+            </h5>
+            
+            <div class="card temple-card temple-info-card mx-3 mb-5">
+                <div class="card-body p-5">
+                    <div class="text-center mb-5">
+                        <i class="fas fa-headset fa-4x mb-3" style="color: var(--primary-orange);"></i>
+                        <h3 class="text-primary">Get in Touch</h3>
+                        <p class="lead">We welcome your inquiries and are here to assist you with any questions about our temple services, accommodations, or spiritual programs.</p>
+                    </div>
+                    
+                    <div class="row g-4">
+                        <div class="col-lg-4 col-md-8">
+                            <div class="card contact-card h-100">
+                                <div class="card-body">
+                                    <i class="fas fa-mobile-alt fa-3x mb-3" style="color: var(--primary-orange);"></i>
+                                    <h4>Main Office</h4>
+                                    <h5 class="text-primary">+91-8233199334</h5>
+                                    <p class="text-muted">For general inquiries and bookings</p>
+                                    <div class="mt-auto">
+                                        <small class="badge bg-success">24/7 Available</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-8">
+                            <div class="card contact-card h-100">
+                                <div class="card-body">
+                                    <i class="fas fa-phone-alt fa-3x mb-3" style="color: var(--primary-orange); transform: rotate(90deg);"></i>
+                                    <h4>Temple Reception</h4>
+                                    <h6 class="text-primary">+91-9414775522</h6>
+                                    <p class="text-muted">For temple timings and ceremonies</p>
+                                    <div class="mt-auto">
+                                        <small class="badge bg-info">Daily 6 AM - 8 PM</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-8">
+                            <div class="card contact-card h-100">
+                                <div class="card-body">
+                                    <i class="fas fa-envelope fa-3x mb-3" style="color: var(--primary-orange);"></i>
+                                    <h4>Email</h4>
+                                    <h6 class="text-primary">gurukultrustrsbd@gmail.com</h6>
+                                    <p class="text-muted">Send us your queries anytime</p>
+                                    <div class="mt-auto">
+                                        <small class="badge bg-warning">Quick Response</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                </div>
+            </div>
+
+            <!-- Message Dialog (hidden by default) -->
+            <div id="messageDialog" style="display: none;" class="temple-card position-fixed top-50 start-50 translate-middle shadow-lg" 
+                 style="z-index: 1050; max-width: 400px;">
+                <div class="card-body p-5 text-center">
+                    <i id="dialogIcon" class="fas fa-check-circle fa-5x mb-4 text-success"></i>
+                    <h2 id="dialogTitle" class="text-success mb-3">Success!</h2>
+                    <div id="dialogMessage" class="alert alert-success">
+                        Your message has been sent successfully.
+                    </div>
+                    <button class="btn btn-temple-primary text-white" id="dialogButton">
+                        <i class="fas fa-redo me-2"></i>OK
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Location -->
+            <div class="card temple-card temple-info-card mx-3">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-map-marker-alt fa-3x mb-3" style="color: var(--primary-orange);"></i>
+                        <h3 class="text-primary">Visit Our Temple</h3>
+                    </div>
+                    
+                    <div class="row align-items-center">
+                        <div class="col-lg-6">
+                            <div class="address-info">
+                                <h5 class="mb-3" style="color: var(--primary-orange);">
+                                    <i class="fas fa-building me-2"></i>Temple Address
+                                </h5>
+                                <div class="mb-3">
+                                    <strong>Full Address:</strong><br>
+                                    Shri Bhattarak Yashkirti Digamber Jain Mandir,<br>
+                                    Gurukul and Dharamshala, Paglyaji Marg, Rishabhdeo
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col-6">
+                                        <small class="text-muted">District:</small><br>
+                                        <strong>Udaipur</strong>
+                                    </div>
+                                    <div class="col-6">
+                                        <small class="text-muted">State:</small><br>
+                                        <strong>Rajasthan</strong>
+                                    </div>
+                                    <div class="col-6">
+                                        <small class="text-muted">Country:</small><br>
+                                        <strong>India</strong>
+                                    </div>
+                                    <div class="col-6">
+                                        <small class="text-muted">Pincode:</small><br>
+                                        <strong>313802</strong>
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    <button class="btn btn-temple-primary text-white" onclick="openGoogleMaps()">
+                                        <i class="fas fa-directions me-2 text-white"></i>Get Directions
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="location-container" onclick="openGoogleMaps()">
+                                <img src="{% static 'img/location.png' %}" alt="Temple Location" class="img-fluid rounded-4 shadow-lg">
+                                <div class="location-icon">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                            </div>
+                            <p class="text-center mt-3 text-muted">
+                                <i class="fas fa-hand-pointer me-2"></i>Click to view on Google Maps
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>

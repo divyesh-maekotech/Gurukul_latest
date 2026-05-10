@@ -1,0 +1,163 @@
+{% load static %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+<section id="home" class="content-section fade-in">
+    <h5 class="section-title">Welcome to Our Temple</h5>
+
+    <!-- Hero Carousel -->
+    <div id="templeCarousel" class="carousel slide mb-5" data-bs-ride="carousel" data-bs-interval="4000"
+        style="border-radius: 16px; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.18);">
+
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#templeCarousel" data-bs-slide-to="0" class="active"></button>
+            <button type="button" data-bs-target="#templeCarousel" data-bs-slide-to="1"></button>
+            <button type="button" data-bs-target="#templeCarousel" data-bs-slide-to="2"></button>
+        </div>
+
+        <div class="carousel-inner">
+
+<!-- Slide 1 -->
+<div class="carousel-item active">
+    <div style="width:100%; height:480px; overflow:hidden; background:#000; position:relative;">
+        <!-- Blurred background layer -->
+        <img src="{% static 'img/temple2.jpeg' %}"
+            style="position:absolute; width:100%; height:100%; object-fit:cover; filter:blur(12px) brightness(0.4); transform:scale(1.1);"
+            alt="">
+        <!-- Main image (no crop) -->
+        <img src="{% static 'img/temple2.jpeg' %}"
+            style="position:absolute; width:100%; height:100%; object-fit:contain; z-index:1;"
+            alt="Temple">
+        <!-- Caption INSIDE the image wrapper, at bottom -->
+        <div style="position:absolute; bottom:0; left:0; right:0; z-index:2;
+                    background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, transparent 100%);
+                    padding: 2rem 2.5rem; text-align:center;">
+            <h3 class="display-5 fw-bold text-white mb-1">Divine Architecture</h3>
+            <p class="lead text-white-50 mb-0">Experience the sacred beauty of our ancient temple</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 2 -->
+<div class="carousel-item">
+    <div style="width:100%; height:480px; overflow:hidden; background:#000; position:relative;">
+        <img src="{% static 'img/temple.jpeg' %}"
+            style="position:absolute; width:100%; height:100%; object-fit:cover; filter:blur(12px) brightness(0.4); transform:scale(1.1);"
+            alt="">
+        <img src="{% static 'img/temple.jpeg' %}"
+            style="position:absolute; width:100%; height:100%; object-fit:contain; z-index:1;"
+            alt="Temple Image 1">
+        <div style="position:absolute; bottom:0; left:0; right:0; z-index:2;
+                    background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, transparent 100%);
+                    padding: 2rem 2.5rem; text-align:center;">
+            <h3 class="display-5 fw-bold text-white mb-1">Spiritual Journey</h3>
+            <p class="lead text-white-50 mb-0">Find peace and enlightenment in our sacred space</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 3 -->
+<div class="carousel-item">
+    <div style="width:100%; height:480px; overflow:hidden; background:#000; position:relative;">
+        <img src="{% static 'img/img7.jpeg' %}"
+            style="position:absolute; width:100%; height:100%; object-fit:cover; filter:blur(12px) brightness(0.4); transform:scale(1.1);"
+            alt="">
+        <img src="{% static 'img/img7.jpeg' %}"
+            style="position:absolute; width:100%; height:100%; object-fit:contain; z-index:1;"
+            alt="Temple Image 2">
+        <div style="position:absolute; bottom:0; left:0; right:0; z-index:2;
+                    background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, transparent 100%);
+                    padding: 2rem 2.5rem; text-align:center;">
+            <h3 class="display-5 fw-bold text-white mb-1">Heritage</h3>
+            <p class="lead text-white-50 mb-0">Preserving ancient wisdom for future generations</p>
+        </div>
+    </div>
+</div>
+        </div>
+
+        <!-- Controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#templeCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#templeCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+    </div>
+
+    <!-- Services Grid -->
+    <div class="row g-4 mt-2">
+        <!-- Original 4 Cards -->
+      
+        <!-- NEW CARDS ADDED HERE -->
+        
+        <!-- Donate Card -->
+     <!-- Donate Card -->
+
+
+     <div class="col-lg-3 col-md-6">
+            <div class="card temple-card contact-card h-100" onclick="showSection('trustees')" style="cursor: pointer; transition: transform 0.2s;">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <i class="fas fa-users fa-3x" style="color: var(--primary-orange);"></i>
+                    </div>
+                    <h4>Our Trustees</h4>
+                    <p class="card-text">Meet the dedicated board managing the temple's vision and operations</p>
+                    <div class="mt-auto">
+                        <small class="text-muted">Leadership & Vision</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="card temple-card contact-card h-100" onclick="showSection('donation')" style="cursor: pointer; transition: transform 0.2s;">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <i class="fas fa-hand-holding-heart fa-3x" style="color: var(--primary-orange);"></i>
+                    </div>
+                    <h4>Donations</h4>
+                    <p class="card-text">Support our temple activities, charity, and community services</p>
+                    <div class="mt-auto">
+                        <small class="text-muted">Every Contribution Helps</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gallery Card -->
+        <div class="col-lg-3 col-md-6">
+            <div class="card temple-card contact-card h-100" onclick="showSection('gallery')" style="cursor: pointer; transition: transform 0.2s;">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <i class="fas fa-images fa-3x" style="color: var(--primary-orange);"></i>
+                    </div>
+                    <h4>Gallery</h4>
+                    <p class="card-text">Explore beautiful moments, festivals, and events at the temple</p>
+                    <div class="mt-auto">
+                        <small class="text-muted">View Collections</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trustees Card -->
+        
+
+        <!-- Online Booking Card -->
+        <div class="col-lg-3 col-md-6">
+            <div class="card temple-card contact-card h-100" onclick="showSection('booking')" style="cursor: pointer; transition: transform 0.2s;">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <i class="fas fa-calendar-check fa-3x" style="color: var(--primary-orange);"></i>
+                    </div>
+                    <h4>Online Booking</h4>
+                    <p class="card-text">Book poojas, accommodations, and special darshan easily online</p>
+                    <div class="mt-auto">
+                        <small class="text-muted">Quick & Secure</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>

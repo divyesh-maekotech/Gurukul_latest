@@ -1,0 +1,40 @@
+<section id="gallery" class="content-section fade-in" style="display: none;">
+    <h5 class="section-title">
+        <i class="fas fa-images me-3"></i> Sacred Gallery
+    </h5>
+
+    <div class="card temple-card temple-info-card mx-3 mb-5">
+        <div class="card-body p-5">
+            <div class="text-center mb-5">
+                <i class="fas fa-camera fa-4x mb-3" style="color: var(--primary-orange);"></i>
+                <h3 class="text-primary">Capture the Divine Moments</h3>
+                <p class="lead">
+                    Explore our beautiful temple through these sacred images and moments from our religious ceremonies and daily activities.
+                </p>
+            </div>
+
+            <div class="row g-4">
+                {% for gallery in galleries %}
+                <div class="col-lg-4 col-md-6">
+                    <div class="card contact-card h-100">
+                        <div class="card-body">
+                            <div class="p-1 w-100">
+                                <img src="{{ gallery.image.url }}" 
+                                     style="width:100%; height:250px; object-fit:cover;" 
+                                     alt="{{ gallery.title }}">
+                            </div>
+                            <h4>{{ gallery.title }}</h4>
+                            <p>{{ gallery.description|truncatewords:20 }}</p>
+                            <div class="mt-2">
+                                <span class="badge bg-primary">{{ gallery.get_category_display }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <p class="text-center text-muted">No images available at the moment.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>

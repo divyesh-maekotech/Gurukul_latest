@@ -1,0 +1,1183 @@
+<section id="booking" class="content-section fade-in" style="display: none;">
+  <style>
+/* place this AFTER bootstrap CSS so it wins */
+.content-section .step-indicator {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center;
+  gap: 18px;
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.content-section .step {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  font-size: 1.05rem;
+  background: #e9ecef;
+  color: #333;
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.content-section .step.active {
+  background: var(--primary-orange, #ff6b00);
+  color: #fff;
+  border-color: var(--primary-orange, #ff6b00);
+}
+.content-section .step.completed {
+  background: #28a745;
+  color: #fff;
+  border-color: #28a745;
+}
+
+/* Room Video Card Hover Effect */
+.room-video-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.room-video-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.15) !important;
+}
+.room-video-card .play-btn {
+  width: 60px;
+  height: 60px;
+  background: rgba(255,0,0,0.88);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+  transition: transform 0.2s ease;
+}
+.room-video-card:hover .play-btn {
+  transform: scale(1.1);
+}
+
+/* --- NEW SCOPED PROFESSIONAL ROOM CARD CSS --- */
+/* Scoped to #booking so it doesn't affect global CSS */
+#booking .room-card {
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border: 2px solid transparent !important;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #ffffff;
+}
+
+#booking .room-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.08) !important;
+    border-color: rgba(0,0,0,0.05) !important;
+}
+
+/* Selected State */
+#booking .room-card.selected {
+    border-color: var(--primary-orange, #ff6b00) !important; 
+    box-shadow: 0 12px 24px rgba(255, 107, 0, 0.15) !important;
+    background-color: #fffbf8; /* Very light subtle tint */
+}
+
+#booking .room-card.selected .selected-checkmark {
+    opacity: 1 !important;
+    transform: scale(1) !important;
+}
+
+#booking .room-card .selected-checkmark {
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all 0.3s ease;
+    color: var(--primary-orange, #ff6b00);
+    z-index: 10;
+}
+
+/* Icon Box for Amenities */
+#booking .room-card .icon-box {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: var(--primary-orange, #ff6b00);
+}
+
+#booking .room-card.selected .price-box {
+    background: rgba(255, 107, 0, 0.05) !important;
+    border-color: rgba(255, 107, 0, 0.2) !important;
+}
+
+#booking .room-card-header {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-bottom: 1px solid #eee;
+}
+
+/* PROFESSIONAL DIALOG BOX LOADER CSS */
+.professional-loader-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.4); 
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    z-index: 99999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.professional-loader-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.loader-dialog {
+    background: #ffffff;
+    padding: 2.5rem 3rem;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    text-align: center;
+    transform: translateY(30px) scale(0.95);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    max-width: 90%;
+    width: 350px;
+}
+
+.professional-loader-overlay.active .loader-dialog {
+    transform: translateY(0) scale(1);
+}
+</style>
+
+    <div class="text-center mb-5">
+        <h1 class="section-title">
+            <i class="fas fa-bed me-3"></i>Book Your Spiritual Stay
+        </h1>
+        <p class="lead text-muted">Experience comfort and serenity at Jain Dharmashala</p>
+    </div>
+
+    <div class="temple-card mb-5">
+        <div class="card-body p-4 p-md-5">
+            <h3 class="text-center mb-2">
+                <i class="fab fa-youtube me-2" style="color:#FF0000;"></i>हमारे कमरे देखें
+            </h3>
+            <p class="text-center text-muted mb-4">Watch our room videos before booking</p>
+
+            <div class="row g-4 justify-content-center">
+
+                <div class="col-md-6">
+                    <div class="room-video-card shadow">
+                        <a href="https://youtu.be/AB2NVbwfIe4" target="_blank" rel="noopener noreferrer">
+                            <div class="position-relative" style="cursor:pointer;">
+                                <img
+                                    src="https://img.youtube.com/vi/AB2NVbwfIe4/hqdefault.jpg"
+                                    alt="AC Room Video"
+                                    class="img-fluid w-100"
+                                    style="display:block; height:220px; object-fit:cover;"
+                                />
+                                <div class="position-absolute bottom-0 start-0 end-0"
+                                     style="background: linear-gradient(transparent, rgba(0,0,0,0.7)); height:80px;">
+                                </div>
+                                <div class="position-absolute top-50 start-50 translate-middle">
+                                    <div class="play-btn">
+                                        <i class="fas fa-play text-white" style="font-size:22px; margin-left:4px;"></i>
+                                    </div>
+                                </div>
+                                <div class="position-absolute top-0 end-0 m-2">
+                                    <span class="badge" style="background:#FF0000; font-size:0.75rem;">
+                                        <i class="fab fa-youtube me-1"></i>YouTube
+                                    </span>
+                                </div>
+                            </div>
+                        </a>
+                        <div class="p-3 text-center" style="background:#fff;">
+                            <h5 class="mb-1">
+                                <i class="fas fa-snowflake me-2" style="color:#0dcaf0;"></i>AC Room
+                            </h5>
+                            <p class="text-muted small mb-2">वातानुकूलित कमरा</p>
+                            <a href="https://youtu.be/AB2NVbwfIe4"
+                               target="_blank" rel="noopener noreferrer"
+                               class="btn btn-sm btn-danger">
+                                <i class="fab fa-youtube me-1"></i> YouTube पर देखें
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="room-video-card shadow">
+                        <a href="https://youtu.be/yqZASWQxOfY" target="_blank" rel="noopener noreferrer">
+                            <div class="position-relative" style="cursor:pointer;">
+                                <img
+                                    src="https://img.youtube.com/vi/yqZASWQxOfY/hqdefault.jpg"
+                                    alt="Non AC Room with Cooler Video"
+                                    class="img-fluid w-100"
+                                    style="display:block; height:220px; object-fit:cover;"
+                                />
+                                <div class="position-absolute bottom-0 start-0 end-0"
+                                     style="background: linear-gradient(transparent, rgba(0,0,0,0.7)); height:80px;">
+                                </div>
+                                <div class="position-absolute top-50 start-50 translate-middle">
+                                    <div class="play-btn">
+                                        <i class="fas fa-play text-white" style="font-size:22px; margin-left:4px;"></i>
+                                    </div>
+                                </div>
+                                <div class="position-absolute top-0 end-0 m-2">
+                                    <span class="badge" style="background:#FF0000; font-size:0.75rem;">
+                                        <i class="fab fa-youtube me-1"></i>YouTube
+                                    </span>
+                                </div>
+                            </div>
+                        </a>
+                        <div class="p-3 text-center" style="background:#fff;">
+                            <h5 class="mb-1">
+                                <i class="fas fa-wind me-2" style="color:#6c757d;"></i>Non-AC Room with Cooler
+                            </h5>
+                            <p class="text-muted small mb-2">कूलर सहित सामान्य कमरा</p>
+                            <a href="https://youtu.be/yqZASWQxOfY"
+                               target="_blank" rel="noopener noreferrer"
+                               class="btn btn-sm btn-danger">
+                                <i class="fab fa-youtube me-1"></i> YouTube पर देखें
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="step-indicator">
+        <div class="step active" id="step1">1</div>
+        <div class="step" id="step2">2</div>
+        <div class="step" id="step3">3</div>
+    </div>
+
+    <div id="searchStep" class="temple-card mb-4">
+        <div class="card-body p-5">
+            <h3 class="text-center mb-3">
+                <i class="fas fa-search text-warning me-2"></i>Search Available Rooms
+            </h3>
+            <div class="alert text-center py-2 mb-4 d-flex flex-wrap justify-content-center gap-3" style="font-size: 0.95rem; background-color: #fffbf8; border: 1px solid rgba(255, 107, 0, 0.2); color: #333; border-radius: 8px;">
+                <span>
+                    <i class="fas fa-sign-in-alt me-1" style="color: var(--primary-orange, #ff6b00);"></i> 
+                    <strong>Check-in:</strong> 12:00 PM
+                </span>
+                <span class="d-none d-md-inline" style="color: #ccc;">|</span>
+                <span>
+                    <i class="fas fa-sign-out-alt me-1" style="color: var(--primary-orange, #ff6b00);"></i> 
+                    <strong>Check-out:</strong> 11:00 AM
+                </span>
+            </div>
+            <form id="searchForm" class="row g-4">
+                <div class="col-md-6">
+                    <label for="checkInDate" class="form-label">
+                        <i class="fas fa-calendar-plus me-2"></i>Check-in Date
+                    </label>
+                    <input type="date" class="form-control" id="checkInDate" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="checkOutDate" class="form-label">
+                        <i class="fas fa-calendar-minus me-2"></i>Check-out Date
+                    </label>
+                    <input type="date" class="form-control" id="checkOutDate" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="guestCount" class="form-label">
+                        <i class="fas fa-users me-2"></i>Number of Guests
+                    </label>
+                    <select class="form-select" id="guestCount" required>
+                        <option value="">Select guests</option>
+                        <option value="1">1 Guest</option>
+                        <option value="2">2 Guests</option>
+                        <option value="3">3 Guests</option>
+                        <option value="4">4 Guests</option>
+                        <option value="5">5+ Guests</option>
+                    </select>
+                </div>
+                <div class="col-12 text-center">
+                    <button type="submit" class="btn btn-temple-primary btn-lg text-white">
+                        <i class="fas fa-search me-2"></i>Search Available Rooms
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="loading-spinner" id="loadingSpinner" style="display: none;">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;"></div>
+        <p class="mt-3">Searching for available rooms...</p>
+    </div>
+
+    <div id="roomSelectionStep" style="display: none;" class="temple-card mb-4">
+        <div class="card-body p-5">
+            <h3 class="text-center mb-4">
+                <i class="fas fa-bed text-warning me-2"></i>Select Your Room
+            </h3>
+            <div id="availableRooms" class="row g-4"></div>
+            <div class="text-center mt-4">
+                <div class="d-flex flex-wrap flex-md-nowrap justify-content-center justify-content-md-start gap-2 mt-2">
+                    <button class="btn btn-outline-secondary" onclick="goToStep(1)">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Search
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="bookingFormStep" style="display: none;" class="temple-card mb-4">
+        <div class="card-body p-5">
+            <h3 class="text-center mb-4">
+                <i class="fas fa-user text-warning me-2"></i>Complete Your Booking
+            </h3>
+            <div id="bookingSummary" class="booking-summary mb-4"></div>
+            <form id="finalBookingForm" class="row g-4">
+                <div class="col-md-6">
+                    <label for="customerName" class="form-label">
+                        <i class="fas fa-user me-2"></i>Full Name *
+                    </label>
+                    <input type="text" class="form-control" id="customerName" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="customerEmail" class="form-label">
+                        <i class="fas fa-envelope me-2"></i>Email Address *
+                    </label>
+                    <input type="email" class="form-control" id="customerEmail" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="customerPhone" class="form-label">
+                        <i class="fas fa-phone me-2"></i>Phone Number *
+                    </label>
+                    <input type="tel" class="form-control" id="customerPhone" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="customerIdNo" class="form-label">
+                        <i class="fas fa-id-card me-2"></i>ID Number (Aadhaar/Passport) *
+                    </label>
+                    <input type="text" class="form-control" id="customerIdNo" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="customerIdProofPhoto" class="form-label">
+                        <i class="fas fa-camera me-2"></i>Upload ID Proof Photo *
+                    </label>
+                    <input type="file" class="form-control" id="customerIdProofPhoto" accept="image/*" required>
+                </div>
+                <div class="col-12">
+                    <label for="specialRequests" class="form-label">
+                        <i class="fas fa-comment me-2"></i>Special Requests
+                    </label>
+                    <textarea class="form-control" id="specialRequests" rows="3" placeholder="Any special requirements..."></textarea>
+                </div>
+                <div class="col-12 text-center">
+                    <button type="button" class="btn btn-outline-secondary me-3" onclick="goToStep(2)">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Rooms
+                    </button>
+                    <button type="submit" class="btn btn-temple-primary btn-lg text-white">
+                        <i class="fas fa-check-circle me-2"></i>Confirm Booking
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+  <div id="bookingLoader" style="display:none;" class="text-center mt-4 mb-4">
+        <div class="spinner-border text-primary" style="width:3rem; height:3rem;" role="status"></div>
+        <p class="mt-3 text-muted">Processing your booking... please wait</p>
+    </div>
+
+    <div id="successMessage" style="display: none;" class="temple-card">
+        <div class="card-body p-5 text-center">
+            <i class="fas fa-check-circle fa-5x text-success mb-4"></i>
+            <h2 class="text-success mb-3">Booking Created!</h2>
+            <div id="bookingDetails" class="alert alert-success"></div>
+            <button class="btn btn-temple-primary text-white mt-3" onclick="location.reload()">
+                <i class="fas fa-plus me-2"></i>Make Another Booking
+            </button>
+        </div>
+    </div>
+
+    <div id="failureMessage" style="display: none;" class="temple-card">
+        <div class="card-body p-5 text-center">
+            <i class="fas fa-times-circle fa-5x text-danger mb-4"></i>
+            <h2 class="text-danger mb-3">Booking Failed!</h2>
+            <div id="failureDetails" class="alert alert-danger"></div>
+            <button class="btn btn-temple-primary text-white mt-3" onclick="location.reload()">
+                <i class="fas fa-redo me-2"></i>Try Again
+            </button>
+        </div>
+    </div>
+
+    <div class="temple-card mt-5">
+        <div class="card-body p-5">
+            <div class="text-center mb-5">
+                <i class="fas fa-phone fa-3x mb-3" style="color: var(--primary-orange, #ff6b00);"></i>
+                <h3 class="text-primary">Alternative Booking Methods</h3>
+                <p class="lead">Prefer traditional booking? We're here to help!</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card contact-card h-100">
+                        <div class="card-body">
+                            <i class="fas fa-phone fa-3x mb-3" style="color: var(--primary-orange, #ff6b00);"></i>
+                            <h4>Phone Booking</h4>
+                            <h5 class="text-primary">+91-82 3319 9334</h5>
+                            <p class="text-muted">Call us for immediate assistance and personalized service</p>
+                            <small class="badge bg-success">Available 24/7</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card contact-card h-100">
+                        <div class="card-body">
+                            <i class="fas fa-envelope fa-3x mb-3" style="color: var(--primary-orange, #ff6b00);"></i>
+                            <h4>Email Booking</h4>
+                            <h6 class="text-primary">gurukultrustrsbd@gmail.com</h6>
+                            <p class="text-muted">Send us your requirements and we'll respond within 24 hours</p>
+                            <small class="badge bg-info">24 Hour Response</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card contact-card h-100">
+                        <div class="card-body">
+                            <i class="fas fa-walking fa-3x mb-3" style="color: var(--primary-orange, #ff6b00);"></i>
+                            <h4>Walk-in Booking</h4>
+                            <h6 class="text-primary">Reception Counter</h6>
+                            <p class="text-muted">Visit us directly for instant bookings and temple tours</p>
+                            <small class="badge bg-warning">Best Rates</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="temple-card mt-5">
+        <div class="card-body p-5">
+            <div class="text-center mb-4">
+                <i class="fas fa-search fa-3x mb-3" style="color: var(--primary-orange, #ff6b00);"></i>
+                <h3 class="text-primary">Check Your Booking Status</h3>
+                <p class="lead">Enter your phone number or ID proof to track your booking</p>
+            </div>
+
+            <div class="d-flex gap-2 mb-4 justify-content-center">
+                <button class="btn btn-temple-primary text-white px-4" id="tabPhone" onclick="switchStatusTab('phone')">
+                    <i class="fas fa-phone me-2"></i>Phone Number
+                </button>
+                <button class="btn btn-outline-secondary px-4" id="tabId" onclick="switchStatusTab('id')">
+                    <i class="fas fa-id-card me-2"></i>ID Proof
+                </button>
+            </div>
+
+            <div id="statusPanelPhone" class="row g-3 justify-content-center mb-3">
+                <div class="col-md-6">
+                    <label class="form-label"><i class="fas fa-phone me-2"></i>Mobile Number</label>
+                    <input type="tel" class="form-control" id="statusPhone" placeholder="e.g. 9876543210" maxlength="15"
+                        onkeydown="if(event.key==='Enter') doStatusSearch()">
+                </div>
+            </div>
+
+            <div id="statusPanelId" class="row g-3 justify-content-center mb-3" style="display:none !important;">
+                <div class="col-md-6">
+                    <label class="form-label"><i class="fas fa-id-card me-2"></i>Aadhaar / Passport Number</label>
+                    <input type="text" class="form-control" id="statusIdNo" placeholder="e.g. 1234 5678 9012" maxlength="20"
+                        onkeydown="if(event.key==='Enter') doStatusSearch()">
+                </div>
+            </div>
+
+            <div class="text-center mb-4">
+                <button class="btn btn-temple-primary btn-lg text-white" id="statusSearchBtn" onclick="doStatusSearch()">
+                    <i class="fas fa-search me-2"></i>Check Booking Status
+                </button>
+            </div>
+
+            <div id="statusResult"></div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let selectedRoom = null;
+        let searchData = {};
+        let availableRooms = [];
+        let statusActiveTab = 'phone';
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('checkInDate').setAttribute('min', today);
+            document.getElementById('checkOutDate').setAttribute('min', today);
+            
+            document.getElementById('checkInDate').addEventListener('change', function() {
+            const nextDay = new Date(this.value);
+            nextDay.setDate(nextDay.getDate() + 1);
+            const nextDayStr = nextDay.toISOString().split('T')[0];
+    
+            // Set checkout minimum to next day
+            document.getElementById('checkOutDate').setAttribute('min', nextDayStr);
+    
+            // Auto-clear checkout if same or before check-in
+            const currentCheckout = document.getElementById('checkOutDate').value;
+            if (currentCheckout && currentCheckout <= this.value) {
+                document.getElementById('checkOutDate').value = nextDayStr;
+            }
+        });
+
+            document.getElementById('searchForm').addEventListener('submit', searchRooms);
+            document.getElementById('finalBookingForm').addEventListener('submit', submitBooking);
+        });
+
+        function goToStep(step) {
+            document.getElementById('searchStep').style.display = 'none';
+            document.getElementById('roomSelectionStep').style.display = 'none';
+            document.getElementById('bookingFormStep').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'none';
+            document.getElementById('failureMessage').style.display = 'none';
+
+            for (let i = 1; i <= 3; i++) {
+                const stepEl = document.getElementById(`step${i}`);
+                stepEl.classList.remove('active', 'completed');
+                if (i < step) stepEl.classList.add('completed');
+                else if (i === step) stepEl.classList.add('active');
+            }
+
+            switch(step) {
+                case 1: document.getElementById('searchStep').style.display = 'block'; break;
+                case 2: document.getElementById('roomSelectionStep').style.display = 'block'; break;
+                case 3:
+                    document.getElementById('bookingFormStep').style.display = 'block';
+                    updateBookingSummary();
+                    break;
+            }
+        }
+
+        async function searchRooms(event) {
+            event.preventDefault();
+            const checkIn = document.getElementById('checkInDate').value;
+            const checkOut = document.getElementById('checkOutDate').value;
+            const guests = document.getElementById('guestCount').value;
+
+            if (!checkIn || !checkOut || !guests) {
+                showAlert('Please fill in all search fields', 'warning');
+                return;
+            }
+
+            if (new Date(checkOut) <= new Date(checkIn)) {
+                showAlert('⚠️ Check-out date must be at least 1 day after check-in. Same day booking is not allowed.', 'warning');
+                return;
+            }
+
+            searchData = { checkIn, checkOut, guests };
+            document.getElementById('searchStep').style.display = 'none';
+            document.getElementById('loadingSpinner').style.display = 'block';
+
+            try {
+                const response = await fetch(`/api/available-rooms/?check_in=${checkIn}&check_out=${checkOut}&guests=${guests}`);
+                if (!response.ok) throw new Error('Failed to fetch available rooms');
+
+                const rooms = await response.json();
+                availableRooms = rooms;
+                document.getElementById('loadingSpinner').style.display = 'none';
+
+                if (rooms.length === 0) {
+                    showAlert('No rooms available for the selected dates. Please try different dates.', 'warning');
+                    document.getElementById('searchStep').style.display = 'block';
+                    return;
+                }
+
+                displayAvailableRooms(rooms);
+                goToStep(2);
+
+            } catch (error) {
+                console.error('Error searching rooms:', error);
+                document.getElementById('loadingSpinner').style.display = 'none';
+                showAlert('Error searching for rooms. Please try again.', 'danger');
+                document.getElementById('searchStep').style.display = 'block';
+            }
+        }
+
+        function displayAvailableRooms(rooms) {
+            const container = document.getElementById('availableRooms');
+            container.innerHTML = '';
+
+            rooms.forEach((room, index) => {
+                const nights = Math.ceil((new Date(searchData.checkOut) - new Date(searchData.checkIn)) / (1000 * 60 * 60 * 24));
+                const totalPrice = room.room_type.price_per_night * nights;
+
+                const roomCard = document.createElement('div');
+                roomCard.className = 'col-md-6 col-lg-4';
+                
+                roomCard.innerHTML = `
+                    <div class="card room-card h-100 shadow-sm position-relative border-0" data-room-id="${room.id}" onclick="selectRoom(${index})">
+                        
+                        <div class="selected-checkmark position-absolute top-0 end-0 m-3">
+                            <i class="fas fa-check-circle fa-2x bg-white rounded-circle"></i>
+                        </div>
+
+                        <div class="room-card-header text-center py-4">
+                            <i class="fas fa-door-open fa-3x text-muted opacity-25"></i>
+                        </div>
+
+                        <div class="card-body p-4 d-flex flex-column">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h4 class="card-title fw-bold mb-0">Room ${room.room_number}</h4>
+                                <span class="badge px-3 py-2 rounded-pill" style="background-color: var(--primary-orange, #ff6b00);">${room.room_type.name}</span>
+                            </div>
+                            
+                            <div class="room-features mb-4 flex-grow-1">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="icon-box me-3"><i class="fas fa-users"></i></div>
+                                    <div>
+                                        <small class="text-muted d-block lh-1 mb-1">Capacity</small>
+                                        <span class="fw-semibold">Up to ${room.room_type.capacity} Guests</span>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="icon-box me-3"><i class="fas fa-bed"></i></div>
+                                    <div>
+                                        <small class="text-muted d-block lh-1 mb-1">Room Type</small>
+                                        <span class="fw-semibold">${room.room_type.name}</span>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <div class="icon-box me-3"><i class="fas fa-wallet"></i></div>
+                                    <div>
+                                        <small class="text-muted d-block lh-1 mb-1">Daily Rate</small>
+                                        <span class="fw-semibold">₹${room.room_type.price_per_night} / night</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="price-box text-center p-3 rounded bg-light border mt-auto transition-all">
+                                <small class="text-muted fw-bold text-uppercase" style="letter-spacing: 1px; font-size: 0.75rem;">Total Stay Estimate</small>
+                                <h3 class="text-success mb-1 fw-bold mt-2">₹${totalPrice.toLocaleString()}</h3>
+                                <small class="text-muted">${nights} night${nights > 1 ? 's' : ''}</small>
+                            </div>
+                        </div>
+                      <button id="bookBtn-${index}" class="btn btn-secondary w-100 text-white fw-bold py-3 shadow-sm book-action-btn" 
+                                        style="border-radius: 12px; font-size: 1.1rem; transition: all 0.3s; opacity: 0.2;"
+                                        disabled
+                                        onclick="event.stopPropagation(); bookRoomDirectly(${index})">
+                                    Select to Book
+                                </button>
+                    </div>
+                `;
+                container.appendChild(roomCard);
+            });
+        }
+
+        function selectRoom(index) {
+            // 1. Reset ALL cards and disable ALL buttons
+            document.querySelectorAll('.room-card').forEach(card => card.classList.remove('selected'));
+            document.querySelectorAll('.book-action-btn').forEach(btn => {
+                btn.disabled = true;
+                btn.classList.remove('btn-temple-primary');
+                btn.classList.add('btn-secondary');
+                btn.style.opacity = '0.6';
+                btn.innerHTML = 'Select to Book';
+            });
+        
+            // 2. Highlight the clicked card
+            document.querySelectorAll('.room-card')[index].classList.add('selected');
+            selectedRoom = availableRooms[index];
+
+            // 3. Enable ONLY the button inside the clicked card
+            const activeBtn = document.getElementById(`bookBtn-${index}`);
+            activeBtn.disabled = false;
+            activeBtn.classList.remove('btn-secondary');
+            activeBtn.classList.add('btn-temple-primary');
+            activeBtn.style.opacity = '1';
+            activeBtn.innerHTML = 'Book This Room <i class="fas fa-arrow-right ms-2"></i>';
+        }
+
+        function bookRoomDirectly(index) {
+            selectedRoom = availableRooms[index];
+            goToStep(3);
+            
+            // Fix for mobile: Wait 50ms for display:block to render, then scroll to the exact top.
+            setTimeout(() => {
+                const formStep = document.getElementById('bookingFormStep');
+                const offset = formStep.getBoundingClientRect().top + window.scrollY - 20; 
+                window.scrollTo({ top: offset, behavior: 'smooth' });
+            }, 50);
+        }
+
+        function updateBookingSummary() {
+            if (!selectedRoom || !searchData) return;
+            const nights = Math.ceil((new Date(searchData.checkOut) - new Date(searchData.checkIn)) / (1000 * 60 * 60 * 24));
+            const totalAmount = selectedRoom.room_type.price_per_night * nights;
+
+            document.getElementById('bookingSummary').innerHTML = `
+                <h4 class="mb-3"><i class="fas fa-clipboard-check me-2"></i>Booking Summary</h4>
+                <div class="row g-3">
+                    <div class="col-md-6"><strong>Room:</strong> ${selectedRoom.room_number} (${selectedRoom.room_type.name})</div>
+                    <div class="col-md-6"><strong>Guests:</strong> ${searchData.guests}</div>
+                    <div class="col-md-6"><strong>Check-in:</strong> ${new Date(searchData.checkIn).toLocaleDateString()}</div>
+                    <div class="col-md-6"><strong>Check-out:</strong> ${new Date(searchData.checkOut).toLocaleDateString()}</div>
+                    <div class="col-md-6"><strong>Nights:</strong> ${nights}</div>
+                    <div class="col-md-6"><strong>Rate:</strong> ₹${selectedRoom.room_type.price_per_night}/night</div>
+                    <div class="col-12 mt-3 pt-3 border-top">
+                        <h5 class="text-success mb-0"><strong>Total Amount: ₹${totalAmount.toLocaleString()}</strong></h5>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function submitBooking(event) {
+            event.preventDefault();
+        
+            // 1. Strict Validation
+            const photoInput = document.getElementById('customerIdProofPhoto');
+            const photoFile = photoInput.files[0];
+
+            if (!photoFile) {
+                showAlert('ID Proof Photo is strictly required to complete the booking.', 'danger');
+                photoInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+        
+            // 2. Trigger UI Loader correctly using class
+            const loader = document.getElementById('bookingLoader');
+            document.getElementById('bookingFormStep').style.display = 'none';
+
+            loader.style.display = 'block';   // ← actually shows it
+            setTimeout(() => {
+                loader.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 50);
+            // 3. Build Form Data
+            const formData = new FormData();
+            formData.append('customer_name', document.getElementById('customerName').value);
+            formData.append('customer_email', document.getElementById('customerEmail').value);
+            formData.append('customer_phone', document.getElementById('customerPhone').value);
+            formData.append('customer_id_no', document.getElementById('customerIdNo').value);
+            formData.append('room_id', selectedRoom.id);
+            formData.append('check_in_date', searchData.checkIn);
+            formData.append('check_out_date', searchData.checkOut);
+            formData.append('guests', parseInt(searchData.guests));
+            formData.append('special_requests', document.getElementById('specialRequests').value || '');
+        
+            try {
+                const compressedFile = await compressImage(photoFile, 2);
+                formData.append('customer_id_proof_photo', compressedFile);
+                
+                const response = await fetch('/api/bookings/', { method: 'POST', body: formData });
+                
+                // Hide loader gracefully
+                loader.style.display = 'none';
+            
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Failed to create booking');
+                }
+            
+                const result = await response.json();
+                showSuccessMessage(result);
+            
+            } catch (error) {
+                // Hide loader gracefully
+                loader.style.display = 'none';
+                
+                console.error('Booking error:', error);
+                showFailureMessage(`Booking failed: ${error.message}`);
+            }
+        }
+
+        function showSuccessMessage(booking) {
+            const nights = Math.ceil((new Date(searchData.checkOut) - new Date(searchData.checkIn)) / (1000 * 60 * 60 * 24));
+            const checkInFormatted = booking.check_in_date ? new Date(booking.check_in_date).toLocaleDateString('en-GB') : new Date(searchData.checkIn).toLocaleDateString('en-GB');
+            const checkOutFormatted = booking.check_out_date ? new Date(booking.check_out_date).toLocaleDateString('en-GB') : new Date(searchData.checkOut).toLocaleDateString('en-GB');
+            const totalAmt = booking.total_amount || (selectedRoom.room_type.price_per_night * nights);
+            const guestName = booking.customer_name || document.getElementById('customerName').value;
+            const guestCount = booking.guests || searchData.guests;
+            
+            const detailsContainer = document.getElementById('bookingDetails');
+            detailsContainer.className = 'mt-4 text-start';
+            detailsContainer.innerHTML = `
+                <div class="booking-receipt p-4 rounded-4" style="background-color: #f8f9fa; border: 1px solid #e9ecef;">
+                    <div class="receipt-header pb-3 mb-4 border-bottom d-flex justify-content-between align-items-center flex-wrap gap-2">
+                        <h4 class="mb-0 text-secondary" style="font-weight: 600;">
+                            <i class="fas fa-receipt me-2" style="color: var(--primary-orange, #ff6b00);"></i>Booking Voucher
+                        </h4>
+                        <span class="badge bg-white text-dark border fs-6 px-3 py-2 shadow-sm rounded-pill">
+                            Booking ID: <span style="color: var(--primary-orange, #ff6b00);">#${booking.id}</span>
+                        </span>
+                    </div>
+                    
+                    <div class="row g-3 mb-4">
+                        <div class="col-sm-6">
+                            <div class="p-3 bg-white rounded-3 shadow-sm h-100 border-start border-4 border-primary">
+                                <small class="text-muted text-uppercase fw-bold" style="font-size: 0.75rem;"><i class="fas fa-user me-2"></i>Guest Details</small>
+                                <div class="fs-5 fw-semibold mt-1 text-dark">${guestName}</div>
+                                <div class="text-muted small">${guestCount} Guest(s)</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="p-3 bg-white rounded-3 shadow-sm h-100 border-start border-4 border-info">
+                                <small class="text-muted text-uppercase fw-bold" style="font-size: 0.75rem;"><i class="fas fa-door-closed me-2"></i>Room Details</small>
+                                <div class="fs-5 fw-semibold mt-1 text-dark">Room ${selectedRoom.room_number}</div>
+                                <div class="text-muted small">${selectedRoom.room_type.name}</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="p-3 bg-white rounded-3 shadow-sm h-100 border-start border-4 border-success">
+                                <small class="text-muted text-uppercase fw-bold" style="font-size: 0.75rem;"><i class="fas fa-calendar-check me-2"></i>Check-in</small>
+                                <div class="fs-5 fw-semibold mt-1 text-dark">${checkInFormatted}</div>
+                                <div class="text-muted small">From 12:00 PM</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="p-3 bg-white rounded-3 shadow-sm h-100 border-start border-4 border-danger">
+                                <small class="text-muted text-uppercase fw-bold" style="font-size: 0.75rem;"><i class="fas fa-calendar-times me-2"></i>Check-out</small>
+                                <div class="fs-5 fw-semibold mt-1 text-dark">${checkOutFormatted}</div>
+                                <div class="text-muted small">Until 11:00 AM</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="payment-box p-4 rounded-3 border bg-white shadow-sm mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="text-muted fs-6 text-uppercase fw-bold">Total Amount</span>
+                            <h2 class="text-success mb-0 fw-bold">₹${Number(totalAmt).toLocaleString('en-IN', {minimumFractionDigits: 2})}</h2>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                            <span class="text-muted fw-semibold">Payment Status</span>
+                            <span class="badge ${booking.status === 'confirmed' ? 'bg-success' : 'bg-warning text-dark'} fs-6 px-4 py-2 rounded-pill shadow-sm">
+                                ${booking.status ? booking.status.toUpperCase() : 'PENDING'}
+                            </span>
+                        </div>
+                    </div>
+
+                    <a href="tel:8233199334" class="text-decoration-none">
+                        <div class="alert border-0 border-start border-4 border-warning bg-white shadow-sm d-flex align-items-center mb-0 p-3">
+                            
+                            <div class="flex-shrink-0 me-3">
+                                <i class="fas fa-info-circle fa-2x text-warning"></i>
+                            </div>
+                            
+                            <div>
+                                <p class="mb-1 text-dark">
+                                    Your booking is confirmed after payment. To confirm, please contact us at:
+                                </p>
+                            
+                                <span class="fw-bold fs-5"
+                                      style="color: var(--primary-orange, #ff6b00);">
+                                    <i class="fas fa-phone-alt me-1"></i>
+                                    8233199334
+                                </span>
+                            </div>
+                            
+                        </div>
+                    </a>
+                </div>
+            `;
+            
+            document.getElementById('bookingFormStep').style.display = 'none';
+            document.getElementById('failureMessage').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'block';
+        }
+
+        function showFailureMessage(errorMessage) {
+            document.getElementById('bookingFormStep').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'none';
+            document.getElementById('failureDetails').innerHTML = `
+                <p>${errorMessage}</p>
+                <p>Please check your details or try again later.</p>
+            `;
+            document.getElementById('failureMessage').style.display = 'block';
+        }
+
+        function showAlert(message, type) {
+            const alertHtml = `
+                <div class="alert alert-${type} alert-dismissible fade show alert-custom" role="alert">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-triangle' : 'exclamation-circle'} me-2"></i>
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            `;
+            const container = document.querySelector('.container');
+            container.insertAdjacentHTML('afterbegin', alertHtml);
+            setTimeout(() => {
+                const alert = container.querySelector('.alert');
+                if (alert) alert.remove();
+            }, 5000);
+        }
+
+        async function compressImage(file, maxSizeMB = 2) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = event => {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        const maxDimension = 1920;
+                        let newWidth = img.width;
+                        let newHeight = img.height;
+
+                        if (img.width > img.height && img.width > maxDimension) {
+                            newWidth = maxDimension;
+                            newHeight = (img.height / img.width) * newWidth;
+                        } else if (img.height > img.width && img.height > maxDimension) {
+                            newHeight = maxDimension;
+                            newWidth = (img.width / img.height) * newHeight;
+                        }
+
+                        canvas.width = newWidth;
+                        canvas.height = newHeight;
+                        ctx.drawImage(img, 0, 0, newWidth, newHeight);
+
+                        let quality = 0.9;
+                        let compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
+                        while (compressedDataUrl.length / 1024 / 1024 > maxSizeMB && quality > 0.1) {
+                            quality -= 0.1;
+                            compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
+                        }
+
+                        fetch(compressedDataUrl)
+                            .then(res => res.blob())
+                            .then(blob => resolve(new File([blob], file.name, { type: 'image/jpeg' })))
+                            .catch(err => reject(err));
+                    };
+                    img.onerror = err => reject(err);
+                };
+            });
+        }
+
+        function switchStatusTab(t) {
+            statusActiveTab = t;
+            const phonePanel = document.getElementById('statusPanelPhone');
+            const idPanel    = document.getElementById('statusPanelId');
+            const tabPhone   = document.getElementById('tabPhone');
+            const tabId      = document.getElementById('tabId');
+
+            if (t === 'phone') {
+                phonePanel.style.display = '';
+                idPanel.style.cssText    = 'display:none !important';
+                tabPhone.className = 'btn btn-temple-primary text-white px-4';
+                tabId.className    = 'btn btn-outline-secondary px-4';
+            } else {
+                phonePanel.style.display = 'none';
+                idPanel.style.cssText    = '';
+                tabPhone.className = 'btn btn-outline-secondary px-4';
+                tabId.className    = 'btn btn-temple-primary text-white px-4';
+            }
+            document.getElementById('statusResult').innerHTML = '';
+        }
+
+        function statusBadgeHtml(s) {
+            const map = {
+                pending:     ['warning', '⏳ Pending'],
+                confirmed:   ['success', '✔ Confirmed'],
+                checked_in:  ['primary', '🏨 Checked In'],
+                checked_out: ['secondary', '✅ Checked Out'],
+                cancelled:   ['danger',  '✗ Cancelled']
+            };
+            const [cls, label] = map[s] || ['secondary', s];
+            return `<span class="badge bg-${cls} fs-6 px-3 py-2 rounded-pill">${label}</span>`;
+        }
+
+        function fmtStatusDate(d) {
+            if (!d) return '—';
+            return new Date(d).toLocaleDateString('en-GB', {day:'2-digit', month:'short', year:'numeric'});
+        }
+
+        function renderStatusBooking(b) {
+            const nights = b.check_in_date && b.check_out_date
+                ? Math.max(1, Math.round((new Date(b.check_out_date) - new Date(b.check_in_date)) / 86400000))
+                : '—';
+            const amt = b.total_amount
+                ? '₹' + Number(b.total_amount).toLocaleString('en-IN')
+                : '—';
+
+            return `
+            <div class="booking-receipt p-4 rounded-4 border" style="background:#f8f9fa;">
+
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 pb-3 mb-3 border-bottom">
+                    <div>
+                        <span class="badge bg-white text-dark border px-3 py-2 shadow-sm rounded-pill">
+                            Booking ID: <span style="color:var(--primary-orange,#ff6b00);">#${b.id}</span>
+                        </span>
+                        <div class="fs-5 fw-semibold mt-2">${b.customer_name || '—'}</div>
+                        <div class="text-muted small">${b.customer_phone || ''}</div>
+                    </div>
+                    ${statusBadgeHtml(b.status)}
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-sm-6">
+                        <div class="p-3 bg-white rounded-3 shadow-sm border-start border-4 border-success h-100">
+                            <small class="text-muted text-uppercase fw-bold" style="font-size:.75rem;">
+                                <i class="fas fa-calendar-check me-1"></i>Check-in
+                            </small>
+                            <div class="fs-5 fw-semibold mt-1">${fmtStatusDate(b.check_in_date)}</div>
+                            <div class="text-muted small">From 12:00 PM</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="p-3 bg-white rounded-3 shadow-sm border-start border-4 border-danger h-100">
+                            <small class="text-muted text-uppercase fw-bold" style="font-size:.75rem;">
+                                <i class="fas fa-calendar-times me-1"></i>Check-out
+                            </small>
+                            <div class="fs-5 fw-semibold mt-1">${fmtStatusDate(b.check_out_date)}</div>
+                            <div class="text-muted small">Until 11:00 AM</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="p-3 bg-white rounded-3 shadow-sm border-start border-4 border-primary h-100">
+                            <small class="text-muted text-uppercase fw-bold" style="font-size:.75rem;">
+                                <i class="fas fa-bed me-1"></i>Room
+                            </small>
+                            <div class="fs-5 fw-semibold mt-1">Room ${b.room_number || '—'}</div>
+                            <div class="text-muted small">${b.room_type || ''}</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="p-3 bg-white rounded-3 shadow-sm border-start border-4 border-warning h-100">
+                            <small class="text-muted text-uppercase fw-bold" style="font-size:.75rem;">
+                                <i class="fas fa-users me-1"></i>Guests & Nights
+                            </small>
+                            <div class="fs-5 fw-semibold mt-1">${b.guests || '—'} Guest(s)</div>
+                            <div class="text-muted small">${nights !== '—' ? nights + ' night' + (nights > 1 ? 's' : '') : ''}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center bg-white rounded-3 p-3 border mb-3">
+                    <span class="text-muted fw-bold text-uppercase" style="font-size:.8rem;">Total Amount</span>
+                    <h3 class="text-success fw-bold mb-0">${amt}</h3>
+                </div>
+
+                ${b.special_requests ? `
+                <div class="text-muted small mb-3">
+                    <i class="fas fa-comment me-1"></i><em>${b.special_requests}</em>
+                </div>` : ''}
+
+                <div class="alert border-0 border-start border-4 border-warning bg-white shadow-sm d-flex align-items-center p-3 mb-0">
+                    <i class="fas fa-info-circle fa-2x text-warning me-3 flex-shrink-0"></i>
+                    <div>
+                        To confirm or modify your booking, contact us at:
+                        <a href="tel:+918233199334" class="fw-bold fs-5 d-block text-decoration-none"
+                           style="color:var(--primary-orange,#ff6b00);">
+                            <i class="fas fa-phone-alt me-1"></i>+91-8233199334
+                        </a>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        function renderStatusList(list) {
+            let html = `<p class="text-muted text-center mb-3">
+                Found <strong>${list.length}</strong> booking(s). Click any to view details.
+            </p><div class="row g-3">`;
+
+            list.forEach((b, i) => {
+                const map = {pending:'warning', confirmed:'success', checked_in:'primary', checked_out:'secondary', cancelled:'danger'};
+                html += `
+                <div class="col-12">
+                    <div class="card border shadow-sm" style="cursor:pointer;border-radius:12px;"
+                         onclick="expandStatusBooking(${i})">
+                        <div class="card-body p-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <div>
+                                <span class="fw-semibold">Room ${b.room_number || '—'}</span>
+                                <span class="text-muted small ms-2">${b.room_type || ''}</span>
+                                <div class="text-muted small mt-1">
+                                    ${fmtStatusDate(b.check_in_date)} → ${fmtStatusDate(b.check_out_date)}
+                                    &bull; ${b.customer_name || ''}
+                                </div>
+                            </div>
+                            ${statusBadgeHtml(b.status)}
+                        </div>
+                    </div>
+                </div>`;
+            });
+
+            html += '</div>';
+            return html;
+        }
+
+        let _statusList = [];
+
+        function expandStatusBooking(i) {
+            document.getElementById('statusResult').innerHTML = `
+                <button class="btn btn-link text-decoration-none mb-3 p-0"
+                        style="color:var(--primary-orange,#ff6b00);" onclick="showStatusList()">
+                    <i class="fas fa-arrow-left me-1"></i> Back to all bookings
+                </button>` + renderStatusBooking(_statusList[i]);
+        }
+
+        function showStatusList() {
+            document.getElementById('statusResult').innerHTML = renderStatusList(_statusList);
+        }
+
+        async function doStatusSearch() {
+            const val = statusActiveTab === 'phone'
+                ? document.getElementById('statusPhone').value.trim()
+                : document.getElementById('statusIdNo').value.trim();
+
+            if (!val) {
+                document.getElementById('statusResult').innerHTML = `
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        Please enter a ${statusActiveTab === 'phone' ? 'phone number' : 'ID proof number'}.
+                    </div>`;
+                return;
+            }
+
+            const btn = document.getElementById('statusSearchBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Searching...';
+            document.getElementById('statusResult').innerHTML = '';
+
+            try {
+                const param = statusActiveTab === 'phone'
+                    ? `customer_phone=${encodeURIComponent(val)}`
+                    : `customer_id_no=${encodeURIComponent(val)}`;
+
+                const res  = await fetch(`/api/booking-status/?${param}`);
+                const data = await res.json();
+
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-search me-2"></i>Check Booking Status';
+
+                if (!res.ok) {
+                    document.getElementById('statusResult').innerHTML = `
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            ${data.error || 'No booking found.'}
+                        </div>`;
+                    return;
+                }
+
+                const list = Array.isArray(data) ? data : [data];
+                _statusList = list;
+
+                if (list.length === 1) {
+                    document.getElementById('statusResult').innerHTML = renderStatusBooking(list[0]);
+                } else {
+                    document.getElementById('statusResult').innerHTML = renderStatusList(list);
+                }
+
+            } catch (e) {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-search me-2"></i>Check Booking Status';
+                document.getElementById('statusResult').innerHTML = `
+                    <div class="alert alert-danger">
+                        <i class="fas fa-times-circle me-2"></i>
+                        Could not connect. Please try again.
+                    </div>`;
+            }
+        }
+    </script>
+</section> 

@@ -1,0 +1,69 @@
+ <div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bookingModalLabel">
+                        <i class="fas fa-edit me-2"></i>Complete Your Booking
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="completeBookingForm">
+                        <input type="hidden" id="selectedRoomId">
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label for="customerName" class="form-label">
+                                    <i class="fas fa-user me-2"></i>Full Name
+                                </label>
+                                <input type="text" class="form-control" id="customerName" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="customerEmail" class="form-label">
+                                    <i class="fas fa-envelope me-2"></i>Email Address
+                                </label>
+                                <input type="email" class="form-control" id="customerEmail" required>
+                            </div>
+                        </div>
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label for="customerPhone" class="form-label">
+                                    <i class="fas fa-phone me-2"></i>Phone Number
+                                </label>
+                                <input type="tel" class="form-control" id="customerPhone" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="customerAge" class="form-label">
+                                    <i class="fas fa-birthday-cake me-2"></i>Age
+                                </label>
+                                <input type="number" class="form-control" id="customerAge" min="1" max="120">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="specialRequests" class="form-label">
+                                <i class="fas fa-comment me-2"></i>Special Requests
+                            </label>
+                            <textarea class="form-control" id="specialRequests" rows="3" placeholder="Any special requirements or preferences..."></textarea>
+                        </div>
+                        <div class="card temple-info-card">
+                            <div class="card-body">
+                                <h5 class="text-primary mb-3">
+                                    <i class="fas fa-clipboard-list me-2"></i>Booking Summary
+                                </h5>
+                                <div id="bookingSummary">
+                                    <!-- Booking details will be populated here -->
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-2"></i>Cancel
+                    </button>
+                    <button type="button" class="btn btn-temple-primary" onclick="submitBooking()">
+                        <i class="fas fa-check me-2"></i>Confirm Booking
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,187 @@
+{% load static %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+<section id="nearby" class="content-section fade-in" style="display: none;">
+    <h5 class="section-title">
+        <i class="fas fa-map me-3"></i>Nearby Sacred Places
+    </h5>
+
+    <div class="card temple-card temple-info-card mx-3 mb-5">
+        <div class="card-body p-5">
+            <div class="text-center mb-5">
+                <i class="fas fa-compass fa-4x mb-3" style="color: var(--primary-orange);"></i>
+                <h3 class="text-primary">Explore the Sacred Region</h3>
+                <p class="lead">
+                    Discover the beautiful landmarks and sacred sites around our temple that enhance your spiritual journey.
+                </p>
+            </div>
+
+            <!-- ✅ Correctly structured Bootstrap grid -->
+            <div class="row g-4">
+                <!-- Card 1 -->
+                {% comment %} <div class="col-lg-4 col-md-6">
+                    <div class="card contact-card h-100">
+                        <div class="card-body">
+                            <div class="p-1 w-100">
+                                <img src="{% static 'img/rishabhdeo_temple.jpg' %}" 
+                                     style="width:100%; height:250px; object-fit:cover;" 
+                                     alt="Temple">
+                            </div>
+                            <h4>Rishabhdeo Temples</h4>
+                            <p>Just 2 km from the Shri Bhattarak Yash Kirti Digambar Jain Dharmarth Trust Gurukul, Rishabhdeo.</p>
+                        </div>
+                    </div>
+                </div> {% endcomment %}
+                <div class="col-lg-4 col-md-6">
+                  <a href="https://www.google.com/maps/place/Kesariyaji+Rishabhdev+Jain+Temple/@24.0842352,73.4963584,40080m/data=!3m1!1e3!4m10!1m2!2m1!1sRishabhdev+tample!3m6!1s0x39679b7d7a13e245:0x5e3ea86fa37d5826!8m2!3d24.0765848!4d73.6895524!15sChFSaXNoYWJoZGV2IHRlbXBsZVoTIhFyaXNoYWJoZGV2IHRlbXBsZZIBC2phaW5fdGVtcGxlqgFFEAEqCiIGdGVtcGxlKAAyHhABIhpAmeX9pPIcdd4OdTEjRQZ9Oo1OPgN075maQjIVEAIiEXJpc2hhYmhkZXYgdGVtcGxl4AEA!16s%2Fg%2F1hd_1zjwq?entry=ttu&g_ep=EgoyMDI1MTAyMC4wIKXMDSoASAFQAw%3D%3D" 
+                     target="_blank" 
+                     style="text-decoration: none; color: inherit;">
+                    <div class="card contact-card h-100 shadow-sm">
+                      <div class="card-body">
+                        <div class="p-1 w-100">
+                          <img src="{% static 'img/rishabhdeo_temple.jpg' %}" 
+                               style="width:100%; height:250px; object-fit:cover; border-radius: 10px;" 
+                               alt="Temple">
+                        </div>
+                        <h4 class="mt-3">Rishabhdeo Temples</h4>
+                        <p>Just 2 km from the Shri Bhattarak Yash Kirti Digambar Jain Dharmarth Trust Gurukul, Rishabhdeo.</p>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="col-lg-4 col-md-6">
+                  <a href="https://www.google.com/maps/place/Mahaveer+Digamber+Jinalaya+Bhaktamar+Mandir/@24.0846855,73.4963569,40080m/data=!3m1!1e3!4m10!1m2!2m1!1smahaveer+nagar+tample+reshibhdeo!3m6!1s0x39679cf703880dc7:0xb4b448c737b8ceff!8m2!3d24.0783495!4d73.6972627!15sCiBtYWhhdmVlciBuYWdhciB0YW1wbGUgcmlzaGFiaGRlb5IBC2phaW5fdGVtcGxlqgFkEAEqGSIVbWFoYXZlZXIgbmFnYXIgdGFtcGxlKAAyHxABIhsfHGacnZWowrYrGAO1QPwRpZ8ogGPA0hmQj48yJBACIiBtYWhhdmVlciBuYWdhciB0YW1wbGUgcmlzaGFiaGRlb-ABAA!16s%2Fg%2F11bt_89h88?entry=ttu&g_ep=EgoyMDI1MTAyMC4wIKXMDSoASAFQAw%3D%3D"
+                     target="_blank"
+                     style="text-decoration: none; color: inherit;">
+                    <div class="card contact-card h-100 shadow-sm">
+                        <div class="card-body">
+                            <div class="p-1 w-100">
+                                <img src="{% static 'img/Mahaveer.jpg' %}" 
+                                     style="width:100%; height:250px; object-fit:cover; border-radius:10px;" 
+                                     alt="Temple">
+                            </div>
+                            <h4 class="mt-3">Mahaveer Nagar</h4>
+                            <p>Just 1 km from the Shri Bhattarak Yash Kirti Digambar Jain Dharmarth Trust Gurukul, Rishabhdeo.</p>
+                        </div>
+                    </div>
+                  </a>
+                </div>
+
+
+                <!-- Card 3 -->
+                   <div class="col-lg-4 col-md-6">
+                  <a href="https://www.google.com/maps/place/Chandragiri/@24.0760538,73.6838955,1253m/data=!3m1!1e3!4m10!1m2!2m1!1sChaDGIRI+RISHABHDEO,313802!3m6!1s0x39679cfae782c047:0x585c7991b7df1b68!8m2!3d24.072736!4d73.6904499!15sChpDaGFER0lSSSBSSVNIQUJIREVPLDMxMzgwMpIBC2phaW5fdGVtcGxl4AEA!16s%2Fg%2F11dxsrt64k?entry=ttu&g_ep=EgoyMDI1MTAyMC4wIKXMDSoASAFQAw%3D%3D"
+                     target="_blank"
+                     style="text-decoration: none; color: inherit;">
+                    <div class="card contact-card h-100 shadow-sm">
+                        <div class="card-body">
+                            <div class="p-1 w-100">
+                                <img src="{% static 'img/chandghari.jpeg' %}" 
+                                     style="width:100%; height:250px; object-fit:cover; border-radius:10px;" 
+                                     alt="Temple">
+                            </div>
+                            <h4 class="mt-3">Chandghari</h4>
+                            <p>Just 3 km from the Shri Bhattarak Yash Kirti Digambar Jain Dharmarth Trust Gurukul, Rishabhdeo.</p>
+                        </div>
+                    </div>
+                  </a>
+                </div>
+       
+
+                <!-- Card 4 -->
+                             <div class="col-lg-4 col-md-6">
+                  <a href="https://www.google.com/maps/place/Pagliyaji+garden/@24.071406,73.6930855,626m/data=!3m2!1e3!4b1!4m6!3m5!1s0x39679cf9683f842d:0x19f2536472305029!8m2!3d24.0714011!4d73.6956604!16s%2Fg%2F11c5h300gf?entry=ttu&g_ep=EgoyMDI1MTAyMC4wIKXMDSoASAFQAw%3D%3D"
+                     target="_blank"
+                     style="text-decoration: none; color: inherit;">
+                    <div class="card contact-card h-100 shadow-sm">
+                        <div class="card-body">
+                            <div class="p-1 w-100">
+                                <img src="{% static 'img/pagliyaji.jpeg' %}" 
+                                     style="width:100%; height:250px; object-fit:cover; border-radius:10px;" 
+                                     alt="Temple">
+                            </div>
+                            <h4 class="mt-3">Pagliyaji</h4>
+                            <p>Just 0.3 km from the Shri Bhattarak Yash Kirti Digambar Jain Dharmarth Trust Gurukul, Rishabhdeo.</p>
+                        </div>
+                    </div>
+                  </a>
+                </div>
+
+                <!-- Card 5 -->
+
+                <div class="col-lg-4 col-md-6">
+                  <a href="https://www.google.com/maps/place/Nagfani+Digamber+Jain+Temple+(Modar)/@23.8048962,73.4630358,17z/data=!3m1!4b1!4m6!3m5!1s0x396762eaaaaaaaab:0xa3d16afe1e8f045c!8m2!3d23.8048913!4d73.4656107!16s%2Fg%2F11cp7jtwf4!5m1!1e4?entry=ttu&g_ep=EgoyMDI1MTAyMC4wIKXMDSoASAFQAw%3D%3D"
+                     target="_blank"
+                     style="text-decoration: none; color: inherit;">
+                    <div class="card contact-card h-100 shadow-sm">
+                        <div class="card-body">
+                            <div class="p-1 w-100">
+                                <img src="{% static 'img/nagfani_parshwanath.jpeg' %}" 
+                                     style="width:100%; height:250px; object-fit:cover; border-radius:10px;" 
+                                     alt="Temple">
+                            </div>
+                            <h4 class="mt-3">Nagfani Parshwanath</h4>
+                            <p>Just 45 km from the Shri Bhattarak Yash Kirti Digambar Jain Dharmarth Trust Gurukul, Rishabhdeo.</p>
+                        </div>
+                    </div>
+                  </a>
+                </div>
+             
+
+                <!-- Card 6 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="card contact-card h-100">
+                        <div class="card-body">
+                            <div class="p-1 w-100">
+                                <img src="{% static 'img/bhatarak_bhavan.jpg' %}" 
+                                     style="width:100%; height:250px; object-fit:cover;" 
+                                     alt="Temple">
+                            </div>
+                            <h4>Bhattarak Bhavan</h4>
+                            <p>Just 1.9 km from the Shri Bhattarak Yash Kirti Digambar Jain Dharmarth Trust Gurukul, Rishabhdeo.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 7 -->
+                 <div class="col-lg-4 col-md-6">
+                  <a href="https://www.google.com/maps/place/Shri+Shantinath+Digambar+Jain+Temple-Atishay+Kshetra/@24.1463124,73.6908583,17z/data=!3m1!4b1!4m6!3m5!1s0x39679b05b1424481:0xbff05a2076e02905!8m2!3d24.1463075!4d73.6934332!16s%2Fg%2F11j1qzh8y_!5m1!1e4?entry=ttu&g_ep=EgoyMDI1MTAyMC4wIKXMDSoASAFQAw%3D%3D"
+                     target="_blank"
+                     style="text-decoration: none; color: inherit;">
+                    <div class="card contact-card h-100 shadow-sm">
+                        <div class="card-body">
+                            <div class="p-1 w-100">
+                                <img src="{% static 'img/pipli.jpeg' %}" 
+                                     style="width:100%; height:250px; object-fit:cover; border-radius:10px;" 
+                                     alt="Temple">
+                            </div>
+                            <h4 class="mt-3">Shantinath Mandir Pipli</h4>
+                            <p>Just 12 km from the Shri Bhattarak Yash Kirti Digambar Jain Dharmarth Trust Gurukul, Rishabhdeo.</p>
+                        </div>
+                    </div>
+                  </a>
+                </div>
+             
+                <div class="col-lg-4 col-md-6">
+                    <div class="card contact-card h-100">
+                        <div class="card-body">
+                            <div class="p-1 w-100">
+                                <img src="{% static 'img/chachmandir.jpeg' %}" 
+                                     style="width:100%; height:250px; object-fit:cover;" 
+                                     alt="Temple">
+                            </div>
+                            <h4>Kach Ka Mandir /Nohara</h4>
+                            <p>Just 1 km from the Shri Bhattarak Yash Kirti Digambar Jain Dharmarth Trust Gurukul, Rishabhdeo.</p>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div> <!-- ✅ End .row -->
+        </div>
+    </div>
+</section>

@@ -1,0 +1,97 @@
+{% load django_bootstrap5 %}
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sign In</title>
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link href="{% static 'css/signin.css' %}" rel="stylesheet">
+</head>
+<body>
+    <main id="login" class="content-section fade-in d-flex justify-content-center align-items-center vh-100">
+        <div class="card temple-card shadow p-4" style="max-width: 420px; width: 100%;">
+            <div class="card-body text-center">
+                <i class="fas fa-user-circle fa-4x mb-3" style="color: var(--primary-orange);"></i>
+                <h3 class="section-title" style="margin-bottom: 10px; font-size: 2rem;">Sign In</h3>
+                {% if messages %}
+                  <div class="messages mb-3">
+                    {% for message in messages %}
+                      <div class="alert alert-{% if message.tags == 'error' %}danger{% elif message.tags == 'success' %}success{% elif message.tags == 'warning' %}warning{% elif message.tags == 'info' %}info{% else %}primary{% endif %} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                      </div>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+
+                
+                <p class="text-muted">Don't have an account? <a href="#" style="color: #E96C28; text-decoration: underline;">Register</a></p>
+                
+                <form method="post" action="{% url 'login_submit' %}" class="mt-4">
+                    {% csrf_token %}
+                   <div class="mb-3 position-relative">
+    <input type="email" class="custom-input" id="email" name="email" required>
+    <label for="email" class="custom-label">Email address</label>
+</div>
+
+<div class="mb-3 position-relative">
+    <input type="password" class="custom-input" id="password" name="password" required>
+    <label for="password" class="custom-label">Password</label>
+</div>
+
+
+                 <div class="form-check mb-3 text-start">
+  <input class="form-check-input" type="checkbox" value="remember-me" id="rememberMe"
+         style="width:1.2rem; height:1.2rem; border: 1px solid #E96C28; background-color: white; accent-color: white;"
+         onclick="this.style.backgroundColor=this.checked ? '#E96C28' : 'white'; this.style.accentColor=this.checked ? 'white' : '#E96C28';">
+  <label class="form-check-label" for="rememberMe">Remember me</label>
+</div>
+
+
+
+
+                    <button class="w-70 btn btn-lg btn-temple-primary text-white" type="submit">
+                        <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+    
+    <script>
+        setTimeout(() => {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+              const bsAlert = new bootstrap.Alert(alert);
+              bsAlert.close();
+            });
+          }, 3000);
+      
+        // Debug CSRF token
+        console.log('CSRF Token:', document.querySelector('[name=csrfmiddlewaretoken]')?.value);
+        
+        // Ensure form submission includes CSRF token
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
+            if (!csrfToken || !csrfToken.value) {
+                console.error('CSRF token missing!');
+                e.preventDefault();
+                alert('CSRF token missing. Please refresh the page.');
+                return false;
+            }
+            console.log('Form submitting with CSRF token:', csrfToken.value);
+        });
+      if (window.history && window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted) {
+                window.location.reload();
+            }
+        });
+      }
+    </script>
+</body>
+</html>

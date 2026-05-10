@@ -1,0 +1,293 @@
+{% extends 'base.html' %}
+{% block title %}
+  Dashboard | Jain Dharmashala
+{% endblock %}
+
+{% block content %}
+  <div class="container-fluid py-3">
+    <!-- 1. Welcome Header & Clock -->
+    <div class="row mb-4 align-items-center">
+      <div class="col-md-8 col-12 mb-3 mb-md-0">
+        <div class="d-flex align-items-center">
+          <div class="p-3 rounded-circle me-3 d-flex align-items-center justify-content-center" style="background: var(--gradient-primary); box-shadow: var(--shadow-soft); width: 55px; height: 55px;">
+            <i class="bi bi-grid-1x2-fill text-white fs-4"></i>
+          </div>
+          <div>
+            <h2 class="fw-bold text-dark mb-0">Dashboard Overview</h2>
+            <p class="text-muted mb-0 mt-1" style="font-size: 0.95rem; color: var(--light-font-color);">Welcome back! Here's your property summary for today.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 col-12 text-md-end">
+        <div class="d-block d-md-inline-block w-100 w-md-auto bg-white p-3 rounded-4 border-start border-4 text-start mt-2 mt-md-0" style="box-shadow: var(--shadow-soft); border-color: var(--primary-orange) !important;">
+          <h6 id="date" class="text-muted mb-1 text-uppercase fw-bold" style="font-size: 0.75rem; letter-spacing: 1px;"></h6>
+
+          <!-- Added flex-wrap and responsive gaps -->
+          <div class="d-flex align-items-center flex-wrap gap-2 gap-md-3">
+            <!-- Added fs-6 for mobile, fs-5 for desktop -->
+            <h5 id="day" class="fw-bold text-dark mb-0 fs-6 fs-md-5"></h5>
+
+            <!-- Hide the vertical line on very small screens to prevent awkward wrapping -->
+            <div class="d-none d-sm-block" style="width: 2px; height: 20px; background-color: #e9ecef;"></div>
+
+            <!-- Added fs-6 for mobile, fs-5 for desktop -->
+            <h5 id="time" class="fw-bold mb-0 fs-6 fs-md-5" style="color: var(--primary-red);"></h5>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Top Stats Cards -->
+    <div class="row g-4 mb-4">
+      <!-- Total Bookings -->
+      <div class="col-12 col-sm-6 col-xl-3">
+        <div class="card h-100 border-0 rounded-4 stat-card" style="box-shadow: var(--shadow-soft);">
+          <div class="card-body p-4">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <h6 class="text-muted fw-semibold text-uppercase mb-0" style="font-size: 0.8rem; letter-spacing: 0.5px;">Total Bookings</h6>
+              <div class="icon-box rounded-circle d-flex align-items-center justify-content-center" style="width: 45px; height: 45px; background-color: #fff3ed; color: var(--primary-orange);">
+                <i class="bi bi-calendar-check fs-5"></i>
+              </div>
+            </div>
+            <h2 class="fw-bold text-dark mb-2">{{ total_bookings }}</h2>
+            <span class="badge rounded-pill px-3 py-2 fw-medium" style="background-color: #e8f5e9; color: #2e7d32;"><i class="bi bi-arrow-up me-1"></i>{{ confirmed_bookings }} confirmed</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pending Approvals -->
+      <div class="col-12 col-sm-6 col-xl-3">
+        <div class="card h-100 border-0 rounded-4 stat-card" style="box-shadow: var(--shadow-soft);">
+          <div class="card-body p-4">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <h6 class="text-muted fw-semibold text-uppercase mb-0" style="font-size: 0.8rem; letter-spacing: 0.5px;">Pending Approvals</h6>
+              <div class="icon-box rounded-circle d-flex align-items-center justify-content-center" style="width: 45px; height: 45px; background-color: #fce4e4; color: var(--primary-red);">
+                <i class="bi bi-hourglass-split fs-5"></i>
+              </div>
+            </div>
+            <h2 class="fw-bold text-dark mb-2">{{ pending_bookings }}</h2>
+            <span class="badge rounded-pill px-3 py-2 fw-medium" style="background-color: #fff3cd; color: #856404;"><i class="bi bi-exclamation-circle me-1"></i>Needs attention</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Check-ins -->
+      <div class="col-12 col-sm-6 col-xl-3">
+        <div class="card h-100 border-0 rounded-4 stat-card" style="box-shadow: var(--shadow-soft);">
+          <div class="card-body p-4">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <h6 class="text-muted fw-semibold text-uppercase mb-0" style="font-size: 0.8rem; letter-spacing: 0.5px;">Check-ins</h6>
+              <div class="icon-box rounded-circle d-flex align-items-center justify-content-center" style="width: 45px; height: 45px; background-color: #e8f5e9; color: #2e7d32;">
+                <i class="bi bi-box-arrow-in-right fs-5"></i>
+              </div>
+            </div>
+            <h2 class="fw-bold text-dark mb-2">{{ today_checkins }}</h2>
+            <span class="badge rounded-pill px-3 py-2 fw-medium" style="background-color: #e3f2fd; color: #0d47a1;"><i class="bi bi-graph-up me-1"></i>Arriving Today</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Check-outs -->
+      <div class="col-12 col-sm-6 col-xl-3">
+        <div class="card h-100 border-0 rounded-4 stat-card" style="box-shadow: var(--shadow-soft);">
+          <div class="card-body p-4">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <h6 class="text-muted fw-semibold text-uppercase mb-0" style="font-size: 0.8rem; letter-spacing: 0.5px;">Check-outs</h6>
+              <div class="icon-box rounded-circle d-flex align-items-center justify-content-center" style="width: 45px; height: 45px; background-color: #e3f2fd; color: #0d47a1;">
+                <i class="bi bi-box-arrow-right fs-5"></i>
+              </div>
+            </div>
+            <h2 class="fw-bold text-dark mb-2">{{ today_checkouts }}</h2>
+            <span class="badge rounded-pill px-3 py-2 fw-medium" style="background-color: #f3e5f5; color: #6a1b9a;"><i class="bi bi-graph-down me-1"></i>Departing Today</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Main Dashboard Grid (8 Columns Left / 4 Columns Right) -->
+    <div class="row g-4 mb-4">
+      <!-- LEFT COLUMN -->
+      <div class="col-lg-8 d-flex flex-column gap-4">
+        <!-- Recent Activity Log -->
+        <div class="card border-0 rounded-4 overflow-hidden flex-grow-1" style="box-shadow: var(--shadow-soft);">
+          <div class="card-header py-3 px-4" style="background: var(--gradient-primary); color: white; border: none;">
+            <h5 class="mb-0 fw-bold"><i class="bi bi-activity me-2"></i>Recent Activity Log</h5>
+          </div>
+          <div class="card-body p-0 bg-white">
+            {% if recent_activities %}
+              <div class="list-group list-group-flush">
+                {% for activity in recent_activities %}
+                  <div class="list-group-item border-bottom py-3 px-4 hover-bg">
+                    <div class="d-flex align-items-center">
+                      <div class="rounded-circle bg-{{ activity.color }} bg-opacity-10 d-flex align-items-center justify-content-center flex-shrink-0 me-3" style="width: 48px; height: 48px;">
+                        <i class="bi bi-{{ activity.icon }} text-{{ activity.color }} fs-5"></i>
+                      </div>
+                      <div class="flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                          <h6 class="mb-0 fw-bold text-dark">{{ activity.title }}</h6>
+                          <small class="text-secondary fw-semibold" style="font-size: 0.75rem;"><i class="bi bi-clock me-1"></i>{{ activity.time_ago }}</small>
+                        </div>
+                        <p class="text-muted mb-0 small">{{ activity.description }}</p>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            {% else %}
+              <div class="text-center py-5">
+                <div class="rounded-circle d-inline-flex p-4 mb-3" style="background-color: var(--sidebar-hover);">
+                  <i class="bi bi-inbox fs-2" style="color: var(--primary-orange);"></i>
+                </div>
+                <h6 class="fw-bold text-dark">No recent activities</h6>
+                <p class="text-muted mb-0 small">When things happen, they'll show up here.</p>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Room Status Breakdown -->
+        <div class="card border-0 rounded-4 overflow-hidden" style="box-shadow: var(--shadow-soft);">
+          <div class="card-header py-3 px-4 bg-white border-bottom">
+            <h5 class="mb-0 fw-bold text-dark"><i class="bi bi-door-open me-2" style="color: var(--primary-orange);"></i>Room Occupancy & Status</h5>
+          </div>
+          <div class="card-body p-4 bg-white">
+            <div class="row align-items-center">
+              <div class="col-md-5 border-end text-center mb-3 mb-md-0">
+                <h2 class="display-4 fw-bold text-dark mb-0">{{ total_rooms }}</h2>
+                <p class="text-muted fw-semibold text-uppercase mb-0" style="letter-spacing: 1px; font-size: 0.8rem;">Total Rooms</p>
+                <div class="d-flex justify-content-center gap-3 mt-3">
+                  <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3">{{ available_rooms }} Available</span>
+                  <span class="badge bg-danger bg-opacity-10 text-danger rounded-pill px-3">{{ occupied_rooms }} Occupied</span>
+                </div>
+              </div>
+              <div class="col-md-7 ps-md-4">
+                <h6 class="text-muted fw-semibold text-uppercase mb-3" style="font-size: 0.75rem; letter-spacing: 0.5px;">Breakdown by Type</h6>
+                <div class="d-flex flex-column gap-2">
+                  {% for rt in room_types_data %}
+                    <div class="d-flex justify-content-between align-items-center p-2 rounded hover-bg border" style="border-color: var(--sidebar-border) !important;">
+                      <span class="fw-medium text-dark">{{ rt.name }}</span>
+                      <span class="badge text-white rounded-pill px-3" style="background-color: var(--primary-orange);">{{ rt.room_count }} Rooms</span>
+                    </div>
+                  {% empty %}
+                    <p class="text-muted small text-center bg-light p-3 rounded">No room types found.</p>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div class="col-lg-4 d-flex flex-column gap-4">
+        <!-- Today's Agenda -->
+        <div class="card border-0 h-100 rounded-4 overflow-hidden" style="box-shadow: var(--shadow-soft);">
+          <div class="card-header py-3 px-4 bg-white border-bottom">
+            <h5 class="mb-0 fw-bold text-dark"><i class="bi bi-calendar-day me-2" style="color: var(--primary-red);"></i>Today's Agenda</h5>
+          </div>
+          <div class="card-body p-4 bg-white">
+            <div class="text-center mb-4">
+              <div class="display-3 fw-bold lh-1" style="color: var(--primary-orange);" id="dateDay">{{ today_date|date:'d' }}</div>
+              <h6 class="text-muted mt-2 mb-0 text-uppercase fw-bold" style="letter-spacing: 1px;" id="dateMonth">{{ today_date|date:'F Y' }}</h6>
+            </div>
+
+            <div class="rounded-3 p-3 mb-2 d-flex justify-content-between align-items-center border" style="background-color: var(--sidebar-hover); border-color: var(--sidebar-border) !important;">
+              <div class="d-flex align-items-center">
+                <div class="rounded p-2 me-3" style="background-color: #e8f5e9;">
+                  <i class="bi bi-box-arrow-in-right text-success"></i>
+                </div>
+                <span class="fw-semibold text-dark">Check-ins</span>
+              </div>
+              <span class="badge bg-success rounded-pill px-3 py-2 fs-6">{{ today_checkins }}</span>
+            </div>
+
+            <div class="rounded-3 p-3 d-flex justify-content-between align-items-center border" style="background-color: var(--sidebar-hover); border-color: var(--sidebar-border) !important;">
+              <div class="d-flex align-items-center">
+                <div class="rounded p-2 me-3" style="background-color: #fff3cd;">
+                  <i class="bi bi-box-arrow-right text-warning"></i>
+                </div>
+                <span class="fw-semibold text-dark">Check-outs</span>
+              </div>
+              <span class="badge bg-warning text-dark rounded-pill px-3 py-2 fs-6">{{ today_checkouts }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mini Stats Widgets -->
+        <div class="row g-3">
+          <div class="col-6">
+            <div class="card border-0 rounded-4 stat-card h-100" style="box-shadow: var(--shadow-soft); background: white;">
+              <div class="card-body p-3 text-center">
+                <i class="bi bi-people fs-2 mb-2 d-block" style="color: var(--primary-orange);"></i>
+                <h4 class="fw-bold text-dark mb-0">{{ total_bookings }}</h4>
+                <small class="text-muted fw-semibold" style="font-size: 0.75rem;">Total Guests</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="card border-0 rounded-4 stat-card h-100" style="box-shadow: var(--shadow-soft); background: white;">
+              <div class="card-body p-3 text-center">
+                <i class="bi bi-image fs-2 mb-2 d-block" style="color: var(--primary-red);"></i>
+                <h4 class="fw-bold text-dark mb-0">{{ active_gallery_images }}</h4>
+                <small class="text-muted fw-semibold" style="font-size: 0.75rem;">Gallery Assets</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* Card Interactions */
+    .stat-card {
+      transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease;
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-hover) !important;
+    }
+    
+    /* List item hovers inheriting your brand colors */
+    .hover-bg {
+      background-color: white;
+      transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+    
+    .hover-bg:hover {
+      background-color: var(--sidebar-hover);
+    }
+    
+    /* Button Animation */
+    .action-btn {
+      transition: all 0.25s ease;
+      border-radius: 10px;
+    }
+    
+    .action-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(233, 108, 40, 0.2) !important;
+    }
+  </style>
+
+  <script>
+    function updateDateTime() {
+      const now = new Date()
+    
+      const dayOptions = { weekday: 'long' }
+      const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' }
+    
+      const dayString = now.toLocaleDateString('en-IN', dayOptions)
+      const dateString = now.toLocaleDateString('en-IN', dateOptions)
+      const timeString = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })
+    
+      document.getElementById('day').textContent = dayString
+      document.getElementById('date').textContent = dateString
+      document.getElementById('time').textContent = timeString
+    }
+    
+    updateDateTime()
+    setInterval(updateDateTime, 1000)
+  </script>
+{% endblock %}

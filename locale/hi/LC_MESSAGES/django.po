@@ -1,0 +1,5 @@
+msgid "Shri Bhattarak Yash Kirti Digambar Jain Dharmarth Trust Gurukul Rishabhdev"
+msgstr "श्री भट्टारक यश कीर्ति दिगंबर जैन धर्मार्थ ट्रस्ट गुरुकुल ऋषभदेव"
+
+msgid "District Udaipur (Rajasthan), Pin Code: 313802"
+msgstr "जिला उदयपुर (राजस्थान), पिन कोड: 313802"

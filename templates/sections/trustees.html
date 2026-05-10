@@ -1,0 +1,101 @@
+{% load static %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+<section id="trustees" class="content-section fade-in" style="display: none;">
+            <h5 class="section-title">
+                <i class="fas fa-users me-3"></i>Board of Trustees
+            </h5>
+            
+            <div class="card temple-card temple-info-card mb-5 mx-3">
+                <div class="card-body p-5">
+                    <div class="text-center mb-5">
+                        <i class="fas fa-handshake fa-4x mb-3" style="color: var(--primary-orange);"></i>
+                        <h3 class="text-primary">Dedicated Leadership</h3>
+                        <p class="lead">Our temple is managed by a dedicated board of trustees committed to maintaining the highest standards of spiritual service and temple management.</p>
+                    </div>
+                    
+              
+                     <div class="row g-3">
+                      <div class="col-lg-4 col-md-6">
+                            <div class="card contact-card h-100">
+                                <div class="card-body">
+                                    <div class="d-inline-block border border-3 rounded-circle p-1" style="border-color: #E96C28 !important;">
+                                        <img src="{% static 'img/davendra_ji.jpg' %}" class="d-block w-100 rounded-circle" alt="Temple">
+                                    </div>
+
+                                  <div style="color: var(--primary-orange);font-size:1.3rem">President</div>
+                                 <div style="color: var(--primary-orange);font-size:1rem">(अध्यक्ष)</div>
+                                    <p>Mr. Devendra Chapya<br> (श्री देवेंद्र छाप्या)</p>
+                                    
+                                <div class="d-flex justify-content-center">
+                                    <a href="tel:+919784700770" class="d-flex align-items-center text-decoration-none" style="color: var(--primary-orange);">
+                                        <i class="fas fa-phone-alt me-2" style="font-size: 1em; transform: rotate(90deg);"></i>
+                                        <span>+91-9829041872</span>
+                                    </a>
+                                </div>
+
+                                </div>
+                            </div>
+                        </div>
+                      <div class="col-lg-4 col-md-6">
+                            <div class="card contact-card h-100">
+                                <div class="card-body">
+                                    <div class="d-inline-block border border-3 rounded-circle p-1" style="border-color: #E96C28 !important;">
+                                        <img src="{% static 'img/sureshji.jpg' %}" class="d-block w-100 rounded-circle" alt="Temple">
+                                    </div>
+
+                                  <div style="color: var(--primary-orange);font-size:1.3rem">Vice President</div>
+                                 <div style="color: var(--primary-orange);font-size:1rem">(उपाध्यक्ष)</div>
+                                    <p>Mr. Suresh Kumar Kothari<br> (श्री सुरेश कुमार कोठारी)</p>
+                                    
+                                <div class="d-flex justify-content-center">
+                                    <a href="tel:+919784700770" class="d-flex align-items-center text-decoration-none" style="color: var(--primary-orange);">
+                                        <i class="fas fa-phone-alt me-2" style="font-size: 1em; transform: rotate(90deg);"></i>
+                                        <span>+91-9784700770</span>
+                                    </a>
+                                </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                            <div class="card contact-card h-100">
+                                <div class="card-body">
+                                    <div class="d-inline-block border border-3 rounded-circle p-1" style="border-color: #E96C28 !important;">
+                                        <img src="{% static 'img/sundarji.jpg' %}" class="d-block w-100 rounded-circle" alt="Temple">
+                                    </div>
+
+                                  <div style="color: var(--primary-orange);font-size:1.3rem">General Secretary</div>
+                                 <div style="color: var(--primary-orange);font-size:1rem">(महामंत्री)</div>
+                                    <p>Mr. Sundar lal Bhanawat <br> (श्री सुंदर लाल भाणावत)</p>
+                                    
+                                <div class="d-flex justify-content-center">
+                                    <a href="tel:+919414162749" class="d-flex align-items-center text-decoration-none" style="color: var(--primary-orange);">
+                                        <i class="fas fa-phone-alt me-2" style="font-size: 1em; transform: rotate(90deg);"></i>
+                                        <span>+91-9414162749</span>
+                                    </a>
+                                </div>
+
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+               
+                </div>
+            </div>
+
+            <!-- Community Involvement -->
+            <div class="card temple-card">
+                <div class="card-body p-4">
+                    <h4 class="text-center mb-4" style="color: var(--primary-orange);">Community Involvement</h4>
+                    <p class="text-center lead">Our trustees are actively involved in community service, organizing religious events, and ensuring that our temple remains a vibrant center for spiritual growth and cultural preservation.</p>
+                    <div class="text-center mt-4">
+                        <button class="btn btn-temple-primary text-white" onclick="showSection('contact')">
+                            <i class="fas fa-envelope me-2 text-white"></i>Contact Trustees
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
